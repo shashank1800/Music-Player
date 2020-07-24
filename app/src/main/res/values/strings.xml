@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Music Player</string>
+    <string name="artist">Artist </string>
+    <string name="released_year">Released year </string>
+    <string name="pause">Pause</string>
+    <string name="play">Play</string>
+    <string name="toggle_mode">Toggle Mode</string>
 </resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#252525</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <color name="subtitle">#fff</color>
+    <color name="title">#06EFD7</color>
+    <color name="background_color">#CACACA</color>
+
+    <color name="bottom_bar_subtitle">#00B5A2</color>
+    <color name="bottom_bar_title">#3949AB</color>
+    <color name="bottom_bar_background_color">#fff</color>
+
+</resources>

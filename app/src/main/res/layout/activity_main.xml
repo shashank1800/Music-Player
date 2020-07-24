@@ -4,13 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="songName"
+            type="String" />
+
+        <variable
+            name="songArtist"
+            type="String" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
         tools:context=".MainActivity">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -20,6 +26,88 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:id="@+id/song_layout"
+            android:alpha="0.95"
+            android:visibility="gone"
+            android:background="@color/bottom_bar_background_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:clickable="true"
+            android:focusable="true">
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/songName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textColor="@color/bottom_bar_title"/>
+
+                    <TextView
+                        android:id="@+id/songArtist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/bottom_bar_subtitle"/>
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/downloading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/play"
+                        android:text="@string/play"
+                        android:visibility="gone"
+                        android:background="@drawable/ic_play"
+                        android:backgroundTint="@color/bottom_bar_subtitle"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"/>
+
+                    <ImageButton
+                        android:id="@+id/pause"
+                        android:text="@string/pause"
+                        android:background="@drawable/ic_pause"
+                        android:visibility="visible"
+                        android:backgroundTint="@color/bottom_bar_subtitle"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
