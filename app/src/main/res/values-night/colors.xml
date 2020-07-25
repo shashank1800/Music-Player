@@ -5,12 +5,12 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#03DAC5</color>
 
-    <color name="subtitle">#fff</color>
-    <color name="title">#06EFD7</color>
-    <color name="background_color">#CACACA</color>
+    <color name="subtitle">#98A7FF</color>
+    <color name="title">#00FFE4</color>
+    <color name="background_color">#494949</color>
 
-    <color name="bottom_bar_subtitle">#00B5A2</color>
-    <color name="bottom_bar_title">#3949AB</color>
+    <color name="bottom_bar_subtitle">#00AF9D</color>
+    <color name="bottom_bar_title">#203093</color>
     <color name="bottom_bar_background_color">#fff</color>
 
 </resources>

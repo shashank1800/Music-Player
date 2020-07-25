@@ -31,6 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            app:layout_constrainedHeight="true"
             android:padding="10dp"
             android:id="@+id/song_layout"
             android:alpha="0.95"
@@ -39,12 +40,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center"
             android:clickable="true"
             android:focusable="true">
-            <SeekBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"/>
+
+<!--            <SeekBar-->
+<!--                android:id="@+id/seek_bar"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="5dp"/>-->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,17 +83,19 @@
                 <ProgressBar
                     android:id="@+id/downloading"
                     android:layout_width="wrap_content"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
                     android:orientation="horizontal">
 
                     <ImageButton
                         android:id="@+id/play"
-                        android:text="@string/play"
+                        android:contentDescription="@string/play"
                         android:visibility="gone"
                         android:background="@drawable/ic_play"
                         android:backgroundTint="@color/bottom_bar_subtitle"
@@ -97,9 +104,9 @@
 
                     <ImageButton
                         android:id="@+id/pause"
-                        android:text="@string/pause"
-                        android:background="@drawable/ic_pause"
+                        android:contentDescription="@string/pause"
                         android:visibility="visible"
+                        android:background="@drawable/ic_pause"
                         android:backgroundTint="@color/bottom_bar_subtitle"
                         android:layout_width="50dp"
                         android:layout_height="50dp"/>

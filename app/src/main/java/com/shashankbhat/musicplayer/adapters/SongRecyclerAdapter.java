@@ -1,11 +1,15 @@
 package com.shashankbhat.musicplayer.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +24,8 @@ import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -30,10 +36,13 @@ public class SongRecyclerAdapter extends RecyclerView.Adapter<SongRecyclerAdapte
     private List<Song> songs = new ArrayList<>();
     private ActivityMainBinding binding;
     private MainActivityViewModel viewModel;
+    private Context context;
+    private Timer mTimer;
 
     public SongRecyclerAdapter(ActivityMainBinding binding, MainActivityViewModel viewModel ){
         this.binding = binding;
         this.viewModel = viewModel;
+        mTimer = new Timer();
     }
 
 
@@ -89,6 +98,8 @@ public class SongRecyclerAdapter extends RecyclerView.Adapter<SongRecyclerAdapte
             mediaPlayer.setDataSource(url);
             mediaPlayer.setOnPreparedListener(mp -> {
                 mp.start();
+                binding.play.setVisibility(View.GONE);
+                binding.pause.setVisibility(View.VISIBLE);
                 binding.downloading.setVisibility(View.GONE);
             });
             mediaPlayer.prepareAsync();
@@ -99,7 +110,7 @@ public class SongRecyclerAdapter extends RecyclerView.Adapter<SongRecyclerAdapte
     @NonNull
     @Override
     public SongAdapter onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.layout_song_view, parent, false);
         return new SongAdapter(view);
     }

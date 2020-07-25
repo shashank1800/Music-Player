@@ -69,9 +69,11 @@ public class MainActivity extends AppCompatActivity {
     private void initPlayClickListener() {
 
         binding.play.setOnClickListener(v -> {
-            UniqueMediaPlayer.getMediaPlayer().start();
-            binding.play.setVisibility(View.GONE);
-            binding.pause.setVisibility(View.VISIBLE);
+            if(!UniqueMediaPlayer.getMediaPlayer().isPlaying()) {
+                UniqueMediaPlayer.getMediaPlayer().start();
+                binding.play.setVisibility(View.GONE);
+                binding.pause.setVisibility(View.VISIBLE);
+            }
         });
 
     }
