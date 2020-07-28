@@ -35,13 +35,6 @@
     "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FImagine%20Dragons%20-%20Believer.mp3?alt=media&token=4c1aede0-6b73-41ec-bcbd-a183244f52da"
   },
   {
-    "id": 6,
-    "name": "Oh Nanana",
-    "artist": "Bonde R300",
-    "released-year": 2017,
-    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2Foh_nanana.mp3?alt=media&token=f42763e9-037a-4b98-9b8b-a8c5c8a564f6"
-  },
-  {
     "id": 7,
     "name": "Sugar And Brownies",
     "artist": "Dharia",
@@ -68,6 +61,13 @@
     "artist": "Queen",
     "released-year": 2016,
     "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FQueen%20-%20We%20will%20rock%20you.mp3?alt=media&token=dd62d1fc-4502-4901-b574-78d838d153ac"
+  },
+  {
+    "id": 6,
+    "name": "Oh Nanana",
+    "artist": "Bonde R300",
+    "released-year": 2017,
+    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2Foh_nanana.mp3?alt=media&token=f42763e9-037a-4b98-9b8b-a8c5c8a564f6"
   },
   {
     "id": 11,

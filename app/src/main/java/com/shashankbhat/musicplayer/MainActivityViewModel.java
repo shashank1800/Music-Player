@@ -1,23 +1,17 @@
 package com.shashankbhat.musicplayer;
 
 import android.app.Application;
-import android.content.Context;
-import android.view.View;
+import android.media.MediaPlayer;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PagedList;
 
 import com.shashankbhat.musicplayer.data.Song;
-import com.shashankbhat.musicplayer.databinding.ActivityMainBinding;
-import com.shashankbhat.musicplayer.utils.FileReadHelper;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.shashankbhat.musicplayer.database.SongRepository;
+import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
 
 /**
  * Created by SHASHANK BHAT on 23-Jul-20.
@@ -25,65 +19,41 @@ import java.util.List;
  */
 public class MainActivityViewModel extends AndroidViewModel {
 
-    private  MutableLiveData<List<Song>> mutableSongList;
     private MutableLiveData<Song> currentSong ;
-    private List<Song> songList = new ArrayList<>();
+    private LiveData<PagedList<Song>> songList, downloadedSongs;
+
+    public MutableLiveData<Boolean> isSongLayoutVisible;
+    public MutableLiveData<Boolean> isDownloadLoaderVisible;
+    public MediaPlayer mediaPlayer;
+    public MutableLiveData<Boolean> isSongPlaying;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
-        mutableSongList = new MutableLiveData<>();
-        currentSong = new MediatorLiveData<>();
+        currentSong = new MutableLiveData<>(new Song(0,"","",0,"", false));
+        mediaPlayer =  UniqueMediaPlayer.getMediaPlayer();
 
-        readSongsFromJSON(application.getApplicationContext());
-    }
+        isSongLayoutVisible = new MutableLiveData<>(false);
+        isDownloadLoaderVisible = new MutableLiveData<>(false);
+        isSongPlaying = new MutableLiveData<>(false);
 
-    public MutableLiveData<List<Song>> getSongsList() {
-        return mutableSongList;
+        SongRepository songRepository = new SongRepository(application);
+
+        songList = songRepository.getListOfSongs();
+        downloadedSongs = songRepository.getDownloadsSong();
+
     }
 
     public MutableLiveData<Song> getCurrSong(){
         return currentSong;
     }
 
-    public void setCurrSong(Song song){
-        this.currentSong.postValue(song);
+    public LiveData<PagedList<Song>> getDownloadedSongs() {
+        return downloadedSongs;
     }
 
-    private void readSongsFromJSON(Context context) {
+    public void setCurrSong(Song song){ currentSong.setValue(song); }
 
-        String jsonString = FileReadHelper.loadJSONFromAsset(context, "songs.json");
-
-        try {
-            JSONArray songs = new JSONArray(jsonString);
-
-            for (int index = 0; index < songs.length(); index++) {
-                JSONObject song = songs.getJSONObject(index);
-                System.out.println(song.toString());
-                int id = song.getInt("id");
-                String songName = song.getString("name");
-                String songArtist = song.getString("artist");
-                int songReleased = song.getInt("released-year");
-                String songUrl = song.getString("url");
-
-                songList.add(new Song(id, songName, songArtist, songReleased, songUrl));
-            }
-
-            mutableSongList.postValue(songList);
-
-        } catch (Exception ex) {
-            System.out.println("Json parse error :" + ex.getMessage());
-        }
-
-    }
-
-    public void setSongLayout(ActivityMainBinding binding){
-
-        Song song = getCurrSong().getValue();
-
-        if(song!=null) {
-            binding.songName.setText(song.getSongName());
-            binding.songArtist.setText(song.getSongArtist());
-            binding.songLayout.setVisibility(View.VISIBLE);
-        }
+    public LiveData<PagedList<Song>> getSongList() {
+        return songList;
     }
 }
