@@ -1,17 +1,42 @@
 <resources>
     <string name="app_name">Music Player</string>
-    <string name="artist">Artist </string>
-    <string name="released_year">Released year </string>
+
     <string name="pause">Pause</string>
     <string name="play">Play</string>
+
     <string name="toggle_mode">Toggle Mode</string>
+
     <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
+
     <string name="next_song">Next Song</string>
     <string name="previous_song">Previous Song</string>
+
     <string name="home">Home</string>
     <string name="downloads">Downloads</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_songs_available_offline">No songs available offline</string>
+
+    <!--    Transition Names   -->
+    <string name="song_name">Song Name</string>
+    <string name="song_artist">Song Artist</string>
+    <string name="song_play_button">Song Play</string>
+    <string name="song_pause_button">Song Pause</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="settings">Settings</string>
+
+
 </resources>

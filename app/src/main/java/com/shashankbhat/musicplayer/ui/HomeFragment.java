@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.shashankbhat.musicplayer.MainActivityViewModel;
+import com.shashankbhat.musicplayer.SharedViewModel;
 import com.shashankbhat.musicplayer.R;
 import com.shashankbhat.musicplayer.adapters.HomeRecyclerAdapter;
 import com.shashankbhat.musicplayer.databinding.FragmentHomeBinding;
@@ -23,7 +23,7 @@ import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private MainActivityViewModel viewModel;
+    private SharedViewModel viewModel;
 
 
     @Override
@@ -40,7 +40,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
 
         HomeRecyclerAdapter adapter = new HomeRecyclerAdapter(viewModel);
         binding.mainActivityRv.setAdapter(adapter);
@@ -51,12 +51,7 @@ public class HomeFragment extends Fragment {
                 viewModel.isDownloadLoaderVisible.setValue(false);
         });
 
-        viewModel.getSongList().observe(requireActivity(), songs ->{
-
-            System.out.println(viewModel.getSongList().getValue().get(0));
-            adapter.submitList(viewModel.getSongList().getValue());
-
-        });
+        viewModel.getSongList().observe(requireActivity(), adapter::submitList);
     }
 
 

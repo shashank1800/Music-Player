@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.shashankbhat.musicplayer.MainActivityViewModel;
+import com.shashankbhat.musicplayer.SharedViewModel;
 import com.shashankbhat.musicplayer.R;
 import com.shashankbhat.musicplayer.adapters.DownloadsRecyclerAdapter;
 import com.shashankbhat.musicplayer.databinding.FragmentDownloadBinding;
@@ -22,7 +22,7 @@ import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
 public class DownloadFragment extends Fragment {
 
     private FragmentDownloadBinding binding;
-    private MainActivityViewModel viewModel;
+    private SharedViewModel viewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class DownloadFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel = ViewModelProviders.of(requireActivity()).get(MainActivityViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
 
         DownloadsRecyclerAdapter adapter = new DownloadsRecyclerAdapter(viewModel);
         binding.downloadedSongsRv.setAdapter(adapter);
@@ -47,7 +47,11 @@ public class DownloadFragment extends Fragment {
                 viewModel.isDownloadLoaderVisible.setValue(false);
         });
 
-        viewModel.getDownloadedSongs().observe(requireActivity(),adapter::submitList);
+        viewModel.getDownloadedSongs().observe(requireActivity(), songs -> {
+            adapter.submitList(songs);
+            if(songs.size()==0)
+                binding.noSongs.setVisibility(View.VISIBLE);
+        });
     }
 
 

@@ -26,6 +26,7 @@ public class Song extends BaseObservable {
     private int songReleased;
     private String songUrl;
     private boolean isDownloaded;
+    private String songPath;
 
     public Song(int songId, String songName, String songArtist, int songReleased, String songUrl, boolean isDownloaded) {
         this.songId = songId;
@@ -34,6 +35,7 @@ public class Song extends BaseObservable {
         this.songReleased = songReleased;
         this.songUrl = songUrl;
         this.isDownloaded = isDownloaded;
+        this.songPath = "";
     }
 
     public int getSongId() {
@@ -83,6 +85,14 @@ public class Song extends BaseObservable {
 
     public void setDownloaded(boolean downloaded) {
         isDownloaded = downloaded;
+    }
+
+    public String getSongPath() {
+        return songPath;
+    }
+
+    public void setSongPath(String songPath) {
+        this.songPath = songPath;
     }
 
     @Override

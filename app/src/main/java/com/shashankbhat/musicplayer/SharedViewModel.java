@@ -17,17 +17,18 @@ import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
  * Created by SHASHANK BHAT on 23-Jul-20.
  * shashankbhat1800@gmail.com
  */
-public class MainActivityViewModel extends AndroidViewModel {
+public class SharedViewModel extends AndroidViewModel {
 
     private MutableLiveData<Song> currentSong ;
+
     private LiveData<PagedList<Song>> songList, downloadedSongs;
 
-    public MutableLiveData<Boolean> isSongLayoutVisible;
-    public MutableLiveData<Boolean> isDownloadLoaderVisible;
-    public MediaPlayer mediaPlayer;
-    public MutableLiveData<Boolean> isSongPlaying;
+    public MutableLiveData<Boolean> isSongLayoutVisible, isSongPlaying, isDownloadLoaderVisible;
 
-    public MainActivityViewModel(@NonNull Application application) {
+    public MediaPlayer mediaPlayer;
+    private SongRepository songRepository;
+
+    public SharedViewModel(@NonNull Application application) {
         super(application);
         currentSong = new MutableLiveData<>(new Song(0,"","",0,"", false));
         mediaPlayer =  UniqueMediaPlayer.getMediaPlayer();
@@ -36,7 +37,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         isDownloadLoaderVisible = new MutableLiveData<>(false);
         isSongPlaying = new MutableLiveData<>(false);
 
-        SongRepository songRepository = new SongRepository(application);
+        songRepository = new SongRepository(application);
 
         songList = songRepository.getListOfSongs();
         downloadedSongs = songRepository.getDownloadsSong();
@@ -55,5 +56,13 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public LiveData<PagedList<Song>> getSongList() {
         return songList;
+    }
+
+    public void update(Song song){
+        songRepository.update(song);
+    }
+
+    public void delete(Song song){
+        songRepository.delete(song);
     }
 }

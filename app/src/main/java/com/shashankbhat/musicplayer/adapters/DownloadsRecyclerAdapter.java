@@ -2,18 +2,15 @@ package com.shashankbhat.musicplayer.adapters;
 
 import android.media.MediaPlayer;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.shashankbhat.musicplayer.MainActivityViewModel;
-import com.shashankbhat.musicplayer.R;
+import com.shashankbhat.musicplayer.SharedViewModel;
 import com.shashankbhat.musicplayer.data.Song;
+import com.shashankbhat.musicplayer.databinding.LayoutSongDownloadsViewBinding;
 import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
 
 import java.io.IOException;
@@ -25,10 +22,10 @@ import static com.shashankbhat.musicplayer.adapters.HomeRecyclerAdapter.diffCall
  */
 public class DownloadsRecyclerAdapter extends PagedListAdapter<Song, DownloadsRecyclerAdapter.SongViewHolder> {
 
-    private MainActivityViewModel viewModel;
+    private SharedViewModel viewModel;
     private MediaPlayer mediaPlayer;
 
-    public DownloadsRecyclerAdapter(MainActivityViewModel viewModel) {
+    public DownloadsRecyclerAdapter(SharedViewModel viewModel) {
         super(diffCallback);
         this.viewModel = viewModel;
         mediaPlayer = UniqueMediaPlayer.getMediaPlayer();
@@ -37,8 +34,9 @@ public class DownloadsRecyclerAdapter extends PagedListAdapter<Song, DownloadsRe
     @NonNull
     @Override
     public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_song_downloads_view, parent, false);
-        return new DownloadsRecyclerAdapter.SongViewHolder(view);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        LayoutSongDownloadsViewBinding binding = LayoutSongDownloadsViewBinding.inflate(layoutInflater);
+        return new SongViewHolder(binding);
     }
 
     @Override
@@ -51,53 +49,46 @@ public class DownloadsRecyclerAdapter extends PagedListAdapter<Song, DownloadsRe
 
     }
 
-    public class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class SongViewHolder extends RecyclerView.ViewHolder{
 
-        TextView songName_TV, songArtist_TV, songReleased_TV;
-        LinearLayout layout;
+        LayoutSongDownloadsViewBinding binding;
 
-        public SongViewHolder(@NonNull View itemView) {
-            super(itemView);
 
-            songName_TV = itemView.findViewById(R.id.songName);
-            songArtist_TV = itemView.findViewById(R.id.songArtist);
-            songReleased_TV = itemView.findViewById(R.id.songReleased);
-            layout = itemView.findViewById(R.id.linear_layout);
+        public SongViewHolder(@NonNull LayoutSongDownloadsViewBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
         public void bindTo(Song song) {
-            songName_TV.setText(song.getSongName());
-            songArtist_TV.setText(song.getSongArtist());
-            songReleased_TV.setText(String.valueOf(song.getSongReleased()));
-            layout.setOnClickListener(this);
+
+            binding.setSong(song);
+
+            binding.delete.setOnClickListener(v -> {
+                song.setSongPath("");
+                song.setDownloaded(false);
+                viewModel.delete(song);
+            });
+            binding.linearLayout.setOnClickListener(v -> {
+                playAudio(song);
+            });
         }
 
-        @Override
-        public void onClick(View v) {
-
-            Song song = getItem(getAdapterPosition());
-
-            viewModel.isSongLayoutVisible.setValue(true);
-            viewModel.isDownloadLoaderVisible.setValue(true);
-            viewModel.isSongPlaying.setValue(true);
-            viewModel.setCurrSong(song);
-
-            playAudio(song);
-
-        }
     }
 
     private void playAudio(Song song) {
 
+        viewModel.isSongLayoutVisible.setValue(true);
+        viewModel.isSongPlaying.setValue(true);
+        viewModel.setCurrSong(song);
+
+
         try {
-            String url = song.getSongUrl();
+            String path = song.getSongPath();
+
             mediaPlayer.reset();
-            mediaPlayer.setDataSource(url);
-            mediaPlayer.setOnPreparedListener(mp -> {
-                mp.start();
-                viewModel.isDownloadLoaderVisible.setValue(false);
-            });
-            mediaPlayer.prepareAsync();
+            mediaPlayer.setDataSource(path);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
 
         } catch (IOException ignored) { }
     }

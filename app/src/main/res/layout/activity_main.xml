@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.shashankbhat.musicplayer.MainActivityViewModel" />
+            type="com.shashankbhat.musicplayer.SharedViewModel" />
 
         <import type="android.view.View"/>
     </data>
@@ -46,77 +46,87 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:padding="5dp"
-                android:background="@color/bottom_bar_background_color"
-                android:orientation="horizontal">
-
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                app:cardCornerRadius="6dp">
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/songName"
-                        android:text="@={viewModel.currSong.songName}"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="@color/bottom_bar_title"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/songArtist"
-                        android:text="@{viewModel.currSong.songArtist}"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/bottom_bar_subtitle"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <ProgressBar
-                    android:id="@+id/downloading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="@{viewModel.isDownloadLoaderVisible ? View.VISIBLE : View.GONE }"  />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
+                    android:padding="4dp"
+                    android:background="@color/bottom_bar_background_color"
                     android:orientation="horizontal">
 
-                    <ImageButton
-                        android:id="@+id/play"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@drawable/ic_play"
-                        android:backgroundTint="@color/bottom_bar_subtitle"
-                        android:contentDescription="@string/play"
-                        android:visibility="@{viewModel.isSongPlaying ? View.GONE : View.VISIBLE }" />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                    <ImageButton
-                        android:id="@+id/pause"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@drawable/ic_pause"
-                        android:backgroundTint="@color/bottom_bar_subtitle"
-                        android:contentDescription="@string/pause"
-                        android:visibility="@{viewModel.isSongPlaying ? View.VISIBLE : View.GONE }"/>
+                        <TextView
+                            android:id="@+id/songName"
+                            android:transitionName="Song Name"
+                            android:text="@={viewModel.currSong.songName}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/bottom_bar_title"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/songArtist"
+                            android:text="@{viewModel.currSong.songArtist}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/bottom_bar_subtitle"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/downloading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{viewModel.isDownloadLoaderVisible ? View.VISIBLE : View.GONE }"  />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/play"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/ic_play"
+                            android:backgroundTint="@color/bottom_bar_subtitle"
+                            android:contentDescription="@string/play"
+                            android:visibility="@{viewModel.isSongPlaying ? View.GONE : View.VISIBLE }" />
+
+                        <ImageButton
+                            android:id="@+id/pause"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/ic_pause"
+                            android:backgroundTint="@color/bottom_bar_subtitle"
+                            android:contentDescription="@string/pause"
+                            android:visibility="@{viewModel.isSongPlaying ? View.VISIBLE : View.GONE }"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-            </LinearLayout>
+
         </LinearLayout>
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_view"

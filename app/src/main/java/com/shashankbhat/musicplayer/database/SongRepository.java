@@ -36,6 +36,10 @@ public class SongRepository {
         new UpdateTask(song).execute();
     }
 
+    public void delete(Song song){
+        new DeleteTask(song).execute();
+    }
+
     class UpdateTask extends AsyncTask<Void, Void, Void>{
         private Song song;
 
@@ -46,6 +50,20 @@ public class SongRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             songDao.update(song);
+            return null;
+        }
+    }
+
+    class DeleteTask extends AsyncTask<Void, Void, Void>{
+        private Song song;
+
+        public DeleteTask(Song song) {
+            this.song = song;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            songDao.delete(song);
             return null;
         }
     }

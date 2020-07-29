@@ -1,9 +1,14 @@
 package com.shashankbhat.musicplayer.task;
 
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Log;
 
+import com.shashankbhat.musicplayer.callback.DownloadCallBack;
+import com.shashankbhat.musicplayer.data.Song;
+
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,35 +20,65 @@ import java.net.URLConnection;
  */
 public class DownloadSong extends AsyncTask<Void, Void, Void> {
 
-    String aurl;
+    private Song song;
+    private boolean isDownloaded = false;
+    private DownloadCallBack callBack;
+    private String path;
 
-    public DownloadSong(String url){
-        this.aurl = url;
+    public DownloadSong(Song song, DownloadCallBack callBack) {
+        this.song = song;
+        this.callBack = callBack;
+        String dir = Environment.getExternalStorageDirectory()+ "/Media Player/";
+
+        File folder = new File(dir);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        this.path = dir + song.getSongId() + "_" + song.getSongName() + ".mp3";
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
+
+        URLConnection connection;
+        InputStream input;
+        OutputStream output;
+
         int count;
         try {
-            URL url = new URL(aurl);
-            URLConnection conexion = url.openConnection();
-            conexion.connect();
-            int lenghtOfFile = conexion.getContentLength();
-            Log.d("ANDRO_ASYNC", "Lenght of file: " + lenghtOfFile);
-            InputStream input = new BufferedInputStream(url.openStream());
-            OutputStream output = new FileOutputStream("/song1.mp3");
+            URL url = new URL(song.getSongUrl());
+            connection = url.openConnection();
+            connection.connect();
+            input = new BufferedInputStream(url.openStream());
+            output = new FileOutputStream(path);
+
             byte data[] = new byte[1024];
             while ((count = input.read(data)) != -1) {
                 output.write(data, 0, count);
             }
+            isDownloaded = true;
 
             output.flush();
             output.close();
             input.close();
-        } catch (Exception e) {}
+
+        } catch (Exception e) {
+            Log.i("Download", "Incomplete "+e.getMessage());
+        }
+
         return null;
     }
 
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+
+        if(isDownloaded){
+            callBack.onCompleteListener(path);
+            Log.i("Download", "Complete");
+        }
+    }
 }
 
 
