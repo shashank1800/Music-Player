@@ -62,7 +62,7 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
             viewModel.isSongLayoutVisible.setValue(true);
             viewModel.isSongPlaying.setValue(true);
             viewModel.setCurrSong(song);
-
+            mediaPlayer.setOnCompletionListener(mediaPlayer -> viewModel.isSongPlaying.postValue(false));
             assert song != null;
             if(song.isDownloaded())
                 playOfflineSong(song);

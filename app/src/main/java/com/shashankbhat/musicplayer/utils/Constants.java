@@ -6,4 +6,6 @@ package com.shashankbhat.musicplayer.utils;
 public class Constants {
     public static final String DATABASE_NAME = "SONG_DATABASE";
     public static final String TABLE_NAME = "SONG_TABLE";
+
+    public static final String SONG = "SONG";
 }

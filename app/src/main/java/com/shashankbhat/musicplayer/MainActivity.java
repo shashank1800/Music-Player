@@ -1,11 +1,13 @@
 package com.shashankbhat.musicplayer;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +24,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.karumi.dexter.Dexter;
@@ -31,12 +34,17 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.shashankbhat.musicplayer.databinding.ActivityMainBinding;
-import com.shashankbhat.musicplayer.ui.SongPlayer;
+import com.shashankbhat.musicplayer.ui.song_player.SongPlayer;
 import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
+
+import java.io.Serializable;
+import java.util.Locale;
+
+import static com.shashankbhat.musicplayer.utils.Constants.SONG;
 
 
 public class MainActivity extends AppCompatActivity{
-    public ActivityMainBinding binding;
+    private ActivityMainBinding binding;
     private SharedViewModel viewModel;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -50,16 +58,51 @@ public class MainActivity extends AppCompatActivity{
         viewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
         binding.setViewModel(viewModel);
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.getDefaultNightMode());
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-
         initRequestPermission();
+        initSettingsPreference();
 
-        initBottomAppBar(navView);
+        initBottomAppBar(binding.navView);
         initPlayerClickListener();
 
         initPauseClickListener();
         initPlayClickListener();
+    }
+
+    private void initSettingsPreference() {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String language = sharedPreferences.getString("language", "en");
+        boolean mode = sharedPreferences.getBoolean("dark_mode", false);
+
+        Resources res = getApplicationContext().getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        assert language != null;
+        conf.setLocale(new Locale(language));
+        res.updateConfiguration(conf, dm);
+
+
+        if(!mode)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        sharedPreferences.registerOnSharedPreferenceChangeListener((sharedPreferences1, key) -> {
+
+            if(key.equals("language")){
+                String lang = sharedPreferences.getString("language", "english");
+
+            }
+            if(key.equals("dark_mode")){
+                boolean mod = sharedPreferences.getBoolean("dark_mode", false);
+                if(!mod)
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                else
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }
+
+        });
 
     }
 
@@ -70,8 +113,13 @@ public class MainActivity extends AppCompatActivity{
 
             Pair<View, String> pair1 = Pair.create(binding.songName, getResources().getString(R.string.song_name));
             Pair<View, String> pair2 = Pair.create(binding.songArtist, getResources().getString(R.string.song_artist));
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair1, pair2);
+            Pair<View, String> pair3 = Pair.create(binding.songIcon, getResources().getString(R.string.song_icon));
+            Pair<View, String> pair4 = Pair.create(binding.play, getResources().getString(R.string.song_play_button));
+            Pair<View, String> pair5 = Pair.create(binding.pause, getResources().getString(R.string.song_pause_button));
 
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair1, pair2, pair3,pair4,pair5);
+
+            intent.putExtra(SONG, viewModel.getCurrSong().getValue());
             startActivity(intent, options.toBundle());
         });
 
@@ -121,22 +169,22 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES)
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        else
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
-        return true;
-    }
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.main_menu, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//
+//        if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES)
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//        else
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//
+//        return true;
+//    }
 
 }

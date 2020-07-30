@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.SongPlayer"
+            android:name=".ui.song_player.SongPlayer"
             android:theme="@style/PlayerTheme" />
 
         <receiver android:name=".widget.SongWidget">

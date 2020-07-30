@@ -57,8 +57,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="4dp"
+                    android:gravity="center"
                     android:background="@color/bottom_bar_background_color"
                     android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/song_icon"
+                        android:src="@mipmap/ic_launcher"
+                        android:transitionName="@string/song_icon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="10dp"/>
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -71,7 +84,7 @@
 
                         <TextView
                             android:id="@+id/songName"
-                            android:transitionName="Song Name"
+                            android:transitionName="@string/song_name"
                             android:text="@={viewModel.currSong.songName}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -82,6 +95,7 @@
 
                         <TextView
                             android:id="@+id/songArtist"
+                            android:transitionName="@string/song_artist"
                             android:text="@{viewModel.currSong.songArtist}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -110,6 +124,7 @@
                             android:background="@drawable/ic_play"
                             android:backgroundTint="@color/bottom_bar_subtitle"
                             android:contentDescription="@string/play"
+                            android:transitionName="@string/play"
                             android:visibility="@{viewModel.isSongPlaying ? View.GONE : View.VISIBLE }" />
 
                         <ImageButton
@@ -119,6 +134,7 @@
                             android:background="@drawable/ic_pause"
                             android:backgroundTint="@color/bottom_bar_subtitle"
                             android:contentDescription="@string/pause"
+                            android:transitionName="@string/pause"
                             android:visibility="@{viewModel.isSongPlaying ? View.VISIBLE : View.GONE }"/>
 
                     </LinearLayout>
@@ -132,6 +148,7 @@
             android:id="@+id/nav_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

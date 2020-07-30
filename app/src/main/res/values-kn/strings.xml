@@ -1,8 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Music Player</string>
+    <string name="app_name">ಮ್ಯೂಸಿಕ್ ಪ್ಲೇಯರ್</string>
 
-    <string name="pause">Pause</string>
-    <string name="play">Play</string>
+    <string name="pause">ವಿರಾಮ</string>
+    <string name="play">ಆಟ</string>
 
     <string name="toggle_mode">Toggle Mode</string>
 
@@ -13,8 +14,8 @@
     <string name="next_song">Next Song</string>
     <string name="previous_song">Previous Song</string>
 
-    <string name="home">Home</string>
-    <string name="downloads">Downloads</string>
+    <string name="home">ಮನೆ</string>
+    <string name="downloads">ಡೌನ್‌ಲೋಡ್</string>
     <string name="no_songs_available_offline">No songs available offline</string>
 
     <!--    Transition Names   -->
@@ -27,6 +28,4 @@
     <string name="settings">Settings</string>
     <string name="language">Language</string>
     <string name="dark_mode">Dark Mode</string>
-    <string name="song_icon">Song Icon</string>
-
 </resources>

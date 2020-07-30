@@ -34,7 +34,6 @@ android {
 
 dependencies {
 
-    implementation 'androidx.preference:preference:1.1.1'
     def lifecycle_version = "1.1.1"
     def paging_version = "2.1.2"
     def room_database = "2.2.5"
@@ -55,6 +54,8 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     //noinspection LifecycleAnnotationProcessorWithJava8
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
+
+    implementation 'androidx.preference:preference:1.1.1'
 
     implementation 'com.karumi:dexter:6.2.1'
 

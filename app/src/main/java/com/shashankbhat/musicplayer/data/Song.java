@@ -1,11 +1,14 @@
 package com.shashankbhat.musicplayer.data;
 
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import static com.shashankbhat.musicplayer.utils.Constants.TABLE_NAME;
@@ -15,7 +18,7 @@ import static com.shashankbhat.musicplayer.utils.Constants.TABLE_NAME;
  */
 
 @Entity(tableName = TABLE_NAME)
-public class Song extends BaseObservable {
+public class Song extends BaseObservable implements Serializable {
 
     @PrimaryKey
     @NonNull

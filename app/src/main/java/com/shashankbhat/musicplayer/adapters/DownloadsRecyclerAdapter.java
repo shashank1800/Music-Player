@@ -81,7 +81,6 @@ public class DownloadsRecyclerAdapter extends PagedListAdapter<Song, DownloadsRe
         viewModel.isSongPlaying.setValue(true);
         viewModel.setCurrSong(song);
 
-
         try {
             String path = song.getSongPath();
 
@@ -92,6 +91,5 @@ public class DownloadsRecyclerAdapter extends PagedListAdapter<Song, DownloadsRe
 
         } catch (IOException ignored) { }
     }
-
 
 }
