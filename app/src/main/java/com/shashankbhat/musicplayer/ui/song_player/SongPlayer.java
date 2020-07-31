@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.SeekBar;
 
@@ -38,24 +40,40 @@ public class SongPlayer extends AppCompatActivity {
         viewModel.setCurrentSong(song);
         binding.setViewModel(viewModel);
 
+        Intent intent = new Intent();
+        intent.putExtra(SONG, viewModel.getCurrentSong().getValue());
+        setResult(RESULT_OK, intent);
+
         initPauseClickListener();
         initPlayClickListener();
         initPlayerSeeker();
+        initSongCompleteListener();
     }
 
     private void initPlayerSeeker() {
+
+        final int totalMinutes = (viewModel.mediaPlayer.getDuration()/1000)/60;
+        final int totalSeconds = ((viewModel.mediaPlayer.getDuration()/1000)%60);
+
+        viewModel.setEndTime(""+totalMinutes+":"+totalSeconds);
 
         binding.songSeekBar.setMax(viewModel.mediaPlayer.getDuration());
 
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                binding.songSeekBar.setProgress(viewModel.mediaPlayer.getCurrentPosition());
+
+                int currentProgress = viewModel.mediaPlayer.getCurrentPosition();
+                binding.songSeekBar.setProgress(currentProgress);
+
+                int currentMinutes = (currentProgress/1000)/60;
+                int currentSeconds = ((currentProgress/1000)%60);
+
+                viewModel.setCurrentTime(""+currentMinutes+":"+currentSeconds);
             }
         },0,1000);
 
         binding.songSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
@@ -84,7 +102,7 @@ public class SongPlayer extends AppCompatActivity {
         binding.pause.setOnClickListener(v -> {
             if (UniqueMediaPlayer.getMediaPlayer().isPlaying()) {
                 UniqueMediaPlayer.getMediaPlayer().pause();
-                viewModel.isSongPlaying.setValue(false);
+                viewModel.setIsSongPlaying(false);
             }
         });
 
@@ -95,9 +113,13 @@ public class SongPlayer extends AppCompatActivity {
         binding.play.setOnClickListener(v -> {
             if (!UniqueMediaPlayer.getMediaPlayer().isPlaying()) {
                 UniqueMediaPlayer.getMediaPlayer().start();
-                viewModel.isSongPlaying.setValue(true);
+                viewModel.setIsSongPlaying(true);
             }
         });
 
+    }
+
+    private void initSongCompleteListener() {
+        viewModel.mediaPlayer.setOnCompletionListener(mediaPlayer -> viewModel.setIsSongPlaying(false));
     }
 }

@@ -51,6 +51,11 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
                 binding.downloadStatus.setBackground(context.getDrawable(R.drawable.ic_check));
             else
                 binding.downloadStatus.setBackground(context.getDrawable(R.drawable.ic_downloads));
+
+            binding.downloadStatus.setOnClickListener(view -> {
+                if(!song.isDownloaded()) downloadSong(song, binding);
+            });
+
             binding.linearLayout.setOnClickListener(this);
         }
 
@@ -61,14 +66,31 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
 
             viewModel.isSongLayoutVisible.setValue(true);
             viewModel.isSongPlaying.setValue(true);
-            viewModel.setCurrSong(song);
+
             mediaPlayer.setOnCompletionListener(mediaPlayer -> viewModel.isSongPlaying.postValue(false));
+
+            viewModel.setCurrSong(song);
+
             assert song != null;
             if(song.isDownloaded())
                 playOfflineSong(song);
             else
-                playOnlineSong(song, binding);
+                playOnlineSong(song);
+
         }
+    }
+
+    private void downloadSong(Song song, LayoutSongViewBinding binding) {
+
+        Toast.makeText(context, "Downloading..", Toast.LENGTH_SHORT).show();
+        new DownloadSong(song, path -> {
+            song.setDownloaded(true);
+            song.setSongPath(path);
+            viewModel.update(song);
+
+            Toast.makeText(context, "Download finished", Toast.LENGTH_SHORT).show();
+            binding.downloadStatus.setBackground(context.getDrawable(R.drawable.ic_check));
+        }).execute();
     }
 
     @NonNull
@@ -97,21 +119,14 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
             mediaPlayer.prepare();
             mediaPlayer.start();
 
+            viewModel.setCurrSong(song);
+
         } catch (IOException ignored) { }
     }
 
-    private void playOnlineSong(Song song, LayoutSongViewBinding binding) {
+    private void playOnlineSong(Song song) {
 
         viewModel.isDownloadLoaderVisible.setValue(true);
-
-        new DownloadSong(song, path -> {
-            song.setDownloaded(true);
-            song.setSongPath(path);
-            viewModel.update(song);
-
-            Toast.makeText(context, "Song downloaded", Toast.LENGTH_SHORT).show();
-            binding.downloadStatus.setBackground(context.getDrawable(R.drawable.ic_check));
-        }).execute();
 
         try {
             String url = song.getSongUrl();
@@ -120,6 +135,7 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
             mediaPlayer.setOnPreparedListener(mp -> {
                 mp.start();
                 viewModel.isDownloadLoaderVisible.setValue(false);
+                viewModel.setCurrSong(song);
             });
             mediaPlayer.prepareAsync();
 

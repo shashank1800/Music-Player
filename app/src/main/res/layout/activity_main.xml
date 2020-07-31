@@ -64,6 +64,7 @@
                     <ImageView
                         android:id="@+id/song_icon"
                         android:src="@mipmap/ic_launcher"
+                        app:songImage="@{viewModel.currSong.imageUrl}"
                         android:transitionName="@string/song_icon"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -88,10 +89,11 @@
                             android:text="@={viewModel.currSong.songName}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:textColor="@color/bottom_bar_title"
                             android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:singleLine="true"
+                            android:ellipsize="marquee"/>
 
                         <TextView
                             android:id="@+id/songArtist"
@@ -148,7 +150,7 @@
             android:id="@+id/nav_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

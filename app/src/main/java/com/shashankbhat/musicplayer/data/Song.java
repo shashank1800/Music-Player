@@ -1,12 +1,17 @@
 package com.shashankbhat.musicplayer.data;
 
 import android.os.Parcelable;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.databinding.BindingAdapter;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.bumptech.glide.Glide;
+import com.shashankbhat.musicplayer.R;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -28,15 +33,17 @@ public class Song extends BaseObservable implements Serializable {
     private String songArtist;
     private int songReleased;
     private String songUrl;
+    private String imageUrl;
     private boolean isDownloaded;
     private String songPath;
 
-    public Song(int songId, String songName, String songArtist, int songReleased, String songUrl, boolean isDownloaded) {
+    public Song(int songId, String songName, String songArtist, int songReleased, String songUrl, String imageUrl, boolean isDownloaded) {
         this.songId = songId;
         this.songName = songName;
         this.songArtist = songArtist;
         this.songReleased = songReleased;
         this.songUrl = songUrl;
+        this.imageUrl = imageUrl;
         this.isDownloaded = isDownloaded;
         this.songPath = "";
     }
@@ -97,6 +104,15 @@ public class Song extends BaseObservable implements Serializable {
     public void setSongPath(String songPath) {
         this.songPath = songPath;
     }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
 
     @Override
     public boolean equals(Object o) {

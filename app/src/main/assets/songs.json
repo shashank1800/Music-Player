@@ -4,76 +4,87 @@
     "name": "Despacito",
     "artist": "Luis Fonsi",
     "released-year": 2017,
-    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FDespacito.mp3?alt=media&token=3f9a5c6a-11b7-4246-a6cd-0dd3803541ce"
+    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FDespacito.mp3?alt=media&token=3f9a5c6a-11b7-4246-a6cd-0dd3803541ce",
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/song_images%2FDespacito.jpg?alt=media&token=fdeca9f5-6286-4842-b0e5-e400a0a250dc"
   },
   {
     "id": 2,
     "name": "Faded",
     "artist": "Alan Walker",
     "released-year": 2016,
-    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FAlan%20Walker%20-%20Faded.mp3?alt=media&token=4789bd32-b2f5-4eeb-bfbb-56d5b1ac982a"
+    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FAlan%20Walker%20-%20Faded.mp3?alt=media&token=4789bd32-b2f5-4eeb-bfbb-56d5b1ac982a",
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/song_images%2FFaded.jpg?alt=media&token=e6a8724d-771e-4cb5-b39a-19869e937076"
   },
   {
     "id": 3,
     "name": "Camila Cabello - Havana ",
     "artist": "Camila Cabello",
     "released-year": 2018,
-    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FHavana.mp3?alt=media&token=a3a49a8b-1ee1-4f2e-98c2-e5518eaeac09"
+    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FHavana.mp3?alt=media&token=a3a49a8b-1ee1-4f2e-98c2-e5518eaeac09",
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/song_images%2FHavana.jpg?alt=media&token=75712f96-4e10-4dfe-9150-38fdd7cc1eca"
   },
   {
     "id": 4,
     "name": "Believer",
     "artist": "Imagine Dragons",
     "released-year": 2017,
-    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FImagine%20Dragons%20-%20Believer.mp3?alt=media&token=4c1aede0-6b73-41ec-bcbd-a183244f52da"
+    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FImagine%20Dragons%20-%20Believer.mp3?alt=media&token=4c1aede0-6b73-41ec-bcbd-a183244f52da",
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/song_images%2Fbeliever.jpg?alt=media&token=7a41f5fb-e19f-4e94-93ed-c7d0b379346f"
   },
   {
     "id": 5,
     "name": "Let Me Love You",
     "artist": "DJ Snake",
     "released-year": 2016,
-    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FImagine%20Dragons%20-%20Believer.mp3?alt=media&token=4c1aede0-6b73-41ec-bcbd-a183244f52da"
+    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FLet%20Me%20Love%20You.mp3?alt=media&token=db8d5fba-59f3-4f0d-83e2-90ec2ce75f43",
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/song_images%2Flet%20me%20love%20you.jpg?alt=media&token=91277771-3887-44ff-a461-2064aa937196"
   },
   {
     "id": 7,
     "name": "Sugar And Brownies",
     "artist": "Dharia",
     "released-year": 2018,
-    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FDharia%20-%20(Uu%20Nai%20Na)%20Sugar%20And%20Brownies.mp3?alt=media&token=91a18273-1f87-4d76-b9bb-4ce14f9e49ce"
+    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FDharia%20-%20(Uu%20Nai%20Na)%20Sugar%20And%20Brownies.mp3?alt=media&token=91a18273-1f87-4d76-b9bb-4ce14f9e49ce",
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/song_images%2Fsugar%20brownies.jpg?alt=media&token=2d53e1ca-62bf-4fc8-a289-3a3979382700"
   },
   {
     "id": 8,
     "name": "Magenta Riddim",
     "artist": "DJ Snake",
     "released-year": 2018,
-    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FDJ%20Snake%20-%20Magenta%20Riddim.mp3?alt=media&token=da9d35a7-0419-4745-891b-8aeb32d1a2a3"
+    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FDJ%20Snake%20-%20Magenta%20Riddim.mp3?alt=media&token=da9d35a7-0419-4745-891b-8aeb32d1a2a3",
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/song_images%2Fmagenta%20riddim.jpg?alt=media&token=e45e6543-566a-4618-ac1b-257767ba6383"
   },
   {
     "id": 9,
     "name": "Wolves",
     "artist": "Selena Gomez, Marshmello",
     "released-year": 2018,
-    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FWolves%20-%20Selena%20Gomez%2C%20Marshmello.mp3?alt=media&token=5d0f12c1-64e3-45e8-89f2-7409965c5cad"
+    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FWolves%20-%20Selena%20Gomez%2C%20Marshmello.mp3?alt=media&token=5d0f12c1-64e3-45e8-89f2-7409965c5cad",
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/song_images%2FWolves.jpg?alt=media&token=a9f8ad04-f91d-4353-8482-06fa753291b1"
   },
   {
     "id": 10,
     "name": "We Will Rok You",
     "artist": "Queen",
     "released-year": 2016,
-    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FQueen%20-%20We%20will%20rock%20you.mp3?alt=media&token=dd62d1fc-4502-4901-b574-78d838d153ac"
+    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FQueen%20-%20We%20will%20rock%20you.mp3?alt=media&token=dd62d1fc-4502-4901-b574-78d838d153ac",
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/song_images%2Fwe%20will%20rock%20you.jpg?alt=media&token=92f171f7-b34c-4202-b3ec-f2cfac216ff0"
   },
   {
     "id": 6,
     "name": "Oh Nanana",
     "artist": "Bonde R300",
     "released-year": 2017,
-    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2Foh_nanana.mp3?alt=media&token=f42763e9-037a-4b98-9b8b-a8c5c8a564f6"
+    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2Foh_nanana.mp3?alt=media&token=f42763e9-037a-4b98-9b8b-a8c5c8a564f6",
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/song_images%2Foh%20nanana.jpg?alt=media&token=6ba176f8-8f6a-4930-aa17-99b27609b758"
   },
   {
     "id": 11,
     "name": "Get Low",
     "artist": "Queen",
     "released-year": 2017,
-    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FDillon%20Francis%2C%20DJ%20Snake%20-%20Get%20Low%20(Video).mp3?alt=media&token=0b9f58ac-1dc7-44d0-a65b-3dbb3d0408fd"
+    "url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/songs%2FDillon%20Francis%2C%20DJ%20Snake%20-%20Get%20Low%20(Video).mp3?alt=media&token=0b9f58ac-1dc7-44d0-a65b-3dbb3d0408fd",
+    "image_url": "https://firebasestorage.googleapis.com/v0/b/last-seens.appspot.com/o/song_images%2FGet%20low.jpg?alt=media&token=06e70fa8-fb01-4f54-8cba-6b64659cbf46"
   }
 ]

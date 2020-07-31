@@ -3,16 +3,11 @@ package com.shashankbhat.musicplayer;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -33,17 +28,19 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.shashankbhat.musicplayer.data.Song;
 import com.shashankbhat.musicplayer.databinding.ActivityMainBinding;
 import com.shashankbhat.musicplayer.ui.song_player.SongPlayer;
 import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
 
-import java.io.Serializable;
-import java.util.Locale;
 
 import static com.shashankbhat.musicplayer.utils.Constants.SONG;
 
 
 public class MainActivity extends AppCompatActivity{
+
+    public final int SONG_PLAYER_INTENT = 123;
+
     private ActivityMainBinding binding;
     private SharedViewModel viewModel;
 
@@ -68,19 +65,22 @@ public class MainActivity extends AppCompatActivity{
         initPlayClickListener();
     }
 
+
     private void initSettingsPreference() {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String language = sharedPreferences.getString("language", "en");
         boolean mode = sharedPreferences.getBoolean("dark_mode", false);
 
-        Resources res = getApplicationContext().getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        android.content.res.Configuration conf = res.getConfiguration();
-        assert language != null;
-        conf.setLocale(new Locale(language));
-        res.updateConfiguration(conf, dm);
+//        String language = sharedPreferences.getString("language", "en");
+
+
+//        Resources res = getApplicationContext().getResources();
+//        DisplayMetrics dm = res.getDisplayMetrics();
+//        android.content.res.Configuration conf = res.getConfiguration();
+//        assert language != null;
+//        conf.setLocale(new Locale(language));
+//        res.updateConfiguration(conf, dm);
 
 
         if(!mode)
@@ -88,21 +88,21 @@ public class MainActivity extends AppCompatActivity{
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
-        sharedPreferences.registerOnSharedPreferenceChangeListener((sharedPreferences1, key) -> {
-
-            if(key.equals("language")){
-                String lang = sharedPreferences.getString("language", "english");
-
-            }
-            if(key.equals("dark_mode")){
-                boolean mod = sharedPreferences.getBoolean("dark_mode", false);
-                if(!mod)
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                else
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
-
-        });
+//        sharedPreferences.registerOnSharedPreferenceChangeListener((sharedPreferences1, key) -> {
+//
+//            if(key.equals("language")){
+//                String lang = sharedPreferences.getString("language", "english");
+//
+//            }
+//            if(key.equals("dark_mode")){
+//                boolean mod = sharedPreferences.getBoolean("dark_mode", false);
+//                if(!mod)
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//                else
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//            }
+//
+//        });
 
     }
 
@@ -114,13 +114,11 @@ public class MainActivity extends AppCompatActivity{
             Pair<View, String> pair1 = Pair.create(binding.songName, getResources().getString(R.string.song_name));
             Pair<View, String> pair2 = Pair.create(binding.songArtist, getResources().getString(R.string.song_artist));
             Pair<View, String> pair3 = Pair.create(binding.songIcon, getResources().getString(R.string.song_icon));
-            Pair<View, String> pair4 = Pair.create(binding.play, getResources().getString(R.string.song_play_button));
-            Pair<View, String> pair5 = Pair.create(binding.pause, getResources().getString(R.string.song_pause_button));
 
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair1, pair2, pair3,pair4,pair5);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair1, pair2, pair3);
 
             intent.putExtra(SONG, viewModel.getCurrSong().getValue());
-            startActivity(intent, options.toBundle());
+            startActivityForResult(intent, SONG_PLAYER_INTENT, options.toBundle());
         });
 
     }
@@ -169,22 +167,14 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.main_menu, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//
-//        if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES)
-//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//        else
-//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//
-//        return true;
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==SONG_PLAYER_INTENT){
+            viewModel.setCurrSong((Song) data.getSerializableExtra(SONG));
+        }
+    }
+
 
 }
