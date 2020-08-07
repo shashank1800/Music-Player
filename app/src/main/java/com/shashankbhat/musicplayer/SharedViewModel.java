@@ -25,7 +25,6 @@ public class SharedViewModel extends AndroidViewModel {
     private MutableLiveData<Song> currentSong ;
 
     private LiveData<PagedList<Song>> songList, downloadedSongs;
-
     public MutableLiveData<Boolean> isSongLayoutVisible, isSongPlaying, isDownloadLoaderVisible;
 
     public MediaPlayer mediaPlayer;
@@ -36,15 +35,14 @@ public class SharedViewModel extends AndroidViewModel {
         currentSong = new MutableLiveData<>(new Song(0,"","",0,"", "",false));
         mediaPlayer =  UniqueMediaPlayer.getMediaPlayer();
 
-        isSongLayoutVisible = new MutableLiveData<>(mediaPlayer.isPlaying());
+        isSongLayoutVisible = new MutableLiveData<>(false);
         isDownloadLoaderVisible = new MutableLiveData<>(false);
-        isSongPlaying = new MutableLiveData<>(mediaPlayer.isPlaying());
+        isSongPlaying = new MutableLiveData<>(false);
 
         songRepository = new SongRepository(application);
 
         songList = songRepository.getListOfSongs();
         downloadedSongs = songRepository.getDownloadsSong();
-
     }
 
     public MutableLiveData<Song> getCurrSong(){
@@ -56,12 +54,8 @@ public class SharedViewModel extends AndroidViewModel {
     }
 
     public void setCurrSong(Song song){
-        currentSong.setValue(song);
-        if(mediaPlayer.isPlaying())
-            isSongPlaying.setValue(true);
-        else
-            isSongPlaying.setValue(false);
-
+        currentSong.postValue(song);
+        System.out.println(song);
     }
 
     public LiveData<PagedList<Song>> getSongList() {
@@ -75,7 +69,6 @@ public class SharedViewModel extends AndroidViewModel {
     public void delete(Song song){
         songRepository.delete(song);
     }
-
 
     @BindingAdapter("app:songImage")
     public static void songImage(ImageView view, String imageUrl) {

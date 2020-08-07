@@ -33,7 +33,6 @@ import com.shashankbhat.musicplayer.databinding.ActivityMainBinding;
 import com.shashankbhat.musicplayer.ui.song_player.SongPlayer;
 import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
 
-
 import static com.shashankbhat.musicplayer.utils.Constants.SONG;
 
 
@@ -65,6 +64,10 @@ public class MainActivity extends AppCompatActivity{
         initPlayClickListener();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
     private void initSettingsPreference() {
 
@@ -173,8 +176,12 @@ public class MainActivity extends AppCompatActivity{
 
         if(requestCode==SONG_PLAYER_INTENT){
             viewModel.setCurrSong((Song) data.getSerializableExtra(SONG));
+
+            if(viewModel.mediaPlayer.isPlaying())
+                viewModel.isSongPlaying.setValue(true);
+            else
+                viewModel.isSongPlaying.setValue(false);
         }
     }
-
 
 }

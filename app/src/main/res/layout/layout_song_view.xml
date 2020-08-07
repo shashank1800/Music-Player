@@ -6,6 +6,8 @@
         <variable
             name="song"
             type="com.shashankbhat.musicplayer.data.Song" />
+
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -62,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:paddingBottom="2dp"
+                        android:paddingBottom="1dp"
                         android:background="@drawable/round_corner" />
 
                     <TextView
@@ -77,6 +79,17 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <com.dinuscxj.progressbar.CircleProgressBar
+                android:id="@+id/download_progress"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="20dp"/>
 
             <ImageButton
                 android:id="@+id/download_status"

@@ -120,6 +120,6 @@ public class SongPlayer extends AppCompatActivity {
     }
 
     private void initSongCompleteListener() {
-        viewModel.mediaPlayer.setOnCompletionListener(mediaPlayer -> viewModel.setIsSongPlaying(false));
+        viewModel.mediaPlayer.setOnCompletionListener(MediaPlayer::start);
     }
 }

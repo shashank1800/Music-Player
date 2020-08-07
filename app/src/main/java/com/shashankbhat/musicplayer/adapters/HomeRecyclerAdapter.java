@@ -5,7 +5,6 @@ import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PagedListAdapter;
@@ -14,11 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.shashankbhat.musicplayer.SharedViewModel;
 import com.shashankbhat.musicplayer.R;
+import com.shashankbhat.musicplayer.callback.DownloadCallBack;
 import com.shashankbhat.musicplayer.data.Song;
 import com.shashankbhat.musicplayer.databinding.LayoutSongViewBinding;
 import com.shashankbhat.musicplayer.task.DownloadSong;
 import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
-
 import java.io.IOException;
 
 /**
@@ -67,9 +66,9 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
             viewModel.isSongLayoutVisible.setValue(true);
             viewModel.isSongPlaying.setValue(true);
 
-            mediaPlayer.setOnCompletionListener(mediaPlayer -> viewModel.isSongPlaying.postValue(false));
-
             viewModel.setCurrSong(song);
+
+            mediaPlayer.setOnCompletionListener(MediaPlayer::start);
 
             assert song != null;
             if(song.isDownloaded())
@@ -77,20 +76,34 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
             else
                 playOnlineSong(song);
 
+            viewModel.setCurrSong(song);
         }
     }
 
-    private void downloadSong(Song song, LayoutSongViewBinding binding) {
+    public void downloadSong(Song song, LayoutSongViewBinding binding) {
 
-        Toast.makeText(context, "Downloading..", Toast.LENGTH_SHORT).show();
-        new DownloadSong(song, path -> {
-            song.setDownloaded(true);
-            song.setSongPath(path);
-            viewModel.update(song);
+        binding.downloadProgress.setVisibility(View.VISIBLE);
+        binding.downloadStatus.setVisibility(View.GONE);
 
-            Toast.makeText(context, "Download finished", Toast.LENGTH_SHORT).show();
-            binding.downloadStatus.setBackground(context.getDrawable(R.drawable.ic_check));
-        }).execute();
+        DownloadSong downloadSong = new DownloadSong(song, new DownloadCallBack() {
+            @Override
+            public void onCompleteListener(String path) {
+                song.setDownloaded(true);
+                song.setSongPath(path);
+                viewModel.update(song);
+
+                binding.downloadStatus.setVisibility(View.VISIBLE);
+                binding.downloadProgress.setVisibility(View.GONE);
+                binding.downloadStatus.setBackground(context.getDrawable(R.drawable.ic_check));
+            }
+
+            @Override
+            public void onProgressUpdate(int progress) {
+                binding.downloadProgress.setProgress(progress);
+            }
+        });
+
+        downloadSong.execute();
     }
 
     @NonNull
@@ -119,8 +132,6 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
             mediaPlayer.prepare();
             mediaPlayer.start();
 
-            viewModel.setCurrSong(song);
-
         } catch (IOException ignored) { }
     }
 
@@ -135,7 +146,6 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
             mediaPlayer.setOnPreparedListener(mp -> {
                 mp.start();
                 viewModel.isDownloadLoaderVisible.setValue(false);
-                viewModel.setCurrSong(song);
             });
             mediaPlayer.prepareAsync();
 

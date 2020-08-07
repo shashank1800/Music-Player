@@ -1,17 +1,9 @@
 package com.shashankbhat.musicplayer.data;
-
-import android.os.Parcelable;
-import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
-import androidx.databinding.BindingAdapter;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import com.bumptech.glide.Glide;
-import com.shashankbhat.musicplayer.R;
 
 import java.io.Serializable;
 import java.util.Objects;
