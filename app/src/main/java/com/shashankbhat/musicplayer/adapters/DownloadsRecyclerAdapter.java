@@ -46,16 +46,13 @@ public class DownloadsRecyclerAdapter extends PagedListAdapter<Song, DownloadsRe
     public void onBindViewHolder(@NonNull SongViewHolder holder, int position) {
 
         Song song = getItem(position);
-        if (song != null) {
+        if (song != null)
             holder.bindTo(song);
-        }
-
     }
 
     public class SongViewHolder extends RecyclerView.ViewHolder{
 
         LayoutSongDownloadsViewBinding binding;
-
 
         public SongViewHolder(@NonNull LayoutSongDownloadsViewBinding binding) {
             super(binding.getRoot());
@@ -71,6 +68,7 @@ public class DownloadsRecyclerAdapter extends PagedListAdapter<Song, DownloadsRe
                 song.setDownloaded(false);
                 viewModel.delete(song);
             });
+
             binding.linearLayout.setOnClickListener(v -> {
                 playAudio(song);
             });
@@ -84,14 +82,17 @@ public class DownloadsRecyclerAdapter extends PagedListAdapter<Song, DownloadsRe
         try {
             String path = song.getSongPath();
 
+            viewModel.setCurrSong(song);
+
             mediaPlayer.reset();
             mediaPlayer.setDataSource(path);
+            mediaPlayer.setOnCompletionListener(mediaPlayer1 -> viewModel.isSongPlaying.setValue(false));
             mediaPlayer.prepare();
             mediaPlayer.start();
 
             viewModel.isSongLayoutVisible.setValue(true);
             viewModel.isSongPlaying.setValue(true);
-            viewModel.setCurrSong(song);
+//            viewModel.setCurrSong(song);
 
         } catch (IOException ignored) { }
     }

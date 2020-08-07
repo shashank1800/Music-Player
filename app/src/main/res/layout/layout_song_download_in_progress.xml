@@ -22,7 +22,6 @@
 
             <ImageView
                 android:id="@+id/song_icon"
-                android:src="@mipmap/ic_launcher"
                 app:songImage="@{song.imageUrl}"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -31,7 +30,6 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="10dp"/>
-
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -63,8 +61,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="12sp"
-                        android:paddingBottom="1dp"
                         android:textStyle="bold"
+                        android:paddingBottom="1dp"
                         android:background="@drawable/round_corner" />
 
                     <TextView
@@ -80,13 +78,11 @@
 
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/delete"
-                android:background="@drawable/ic_delete"
-                android:backgroundTint="@color/gray"
+            <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                android:id="@+id/download_progress"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"

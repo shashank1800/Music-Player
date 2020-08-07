@@ -5,15 +5,21 @@
     app:startDestination="@+id/navigation_home">
 
     <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.shashankbhat.musicplayer.ui.HomeFragment"
+        android:label="@string/home">
+    </fragment>
+
+    <fragment
         android:id="@+id/navigation_downloads"
         android:name="com.shashankbhat.musicplayer.ui.DownloadFragment"
         android:label="@string/downloads">
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.shashankbhat.musicplayer.ui.HomeFragment"
-        android:label="@string/home">
+        android:id="@+id/navigation_download_in_progress"
+        android:name="com.shashankbhat.musicplayer.ui.DownloadInProgressFragment"
+        android:label="@string/downloading">
     </fragment>
 
     <fragment

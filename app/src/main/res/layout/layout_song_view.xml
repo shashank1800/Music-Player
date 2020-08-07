@@ -6,6 +6,8 @@
         <variable
             name="song"
             type="com.shashankbhat.musicplayer.data.Song" />
+
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -62,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:paddingBottom="2dp"
+                        android:paddingBottom="1dp"
                         android:background="@drawable/round_corner" />
 
                     <TextView

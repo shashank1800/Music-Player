@@ -12,9 +12,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.paging.PagedList;
 
 import com.bumptech.glide.Glide;
+import com.shashankbhat.musicplayer.callback.DownloadCallBack;
 import com.shashankbhat.musicplayer.data.Song;
 import com.shashankbhat.musicplayer.database.SongRepository;
+import com.shashankbhat.musicplayer.task.DownloadSong;
 import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
+
+import java.util.HashMap;
 
 /**
  * Created by SHASHANK BHAT on 23-Jul-20.
@@ -25,7 +29,8 @@ public class SharedViewModel extends AndroidViewModel {
     private MutableLiveData<Song> currentSong ;
 
     private LiveData<PagedList<Song>> songList, downloadedSongs;
-
+    public MutableLiveData<HashMap<Integer,Song>> downloadingSongs;
+    public MutableLiveData<HashMap<Integer, Integer>> downloadingTaskProgress;
     public MutableLiveData<Boolean> isSongLayoutVisible, isSongPlaying, isDownloadLoaderVisible;
 
     public MediaPlayer mediaPlayer;
@@ -36,15 +41,17 @@ public class SharedViewModel extends AndroidViewModel {
         currentSong = new MutableLiveData<>(new Song(0,"","",0,"", "",false));
         mediaPlayer =  UniqueMediaPlayer.getMediaPlayer();
 
-        isSongLayoutVisible = new MutableLiveData<>(mediaPlayer.isPlaying());
+        isSongLayoutVisible = new MutableLiveData<>(false);
         isDownloadLoaderVisible = new MutableLiveData<>(false);
-        isSongPlaying = new MutableLiveData<>(mediaPlayer.isPlaying());
+        isSongPlaying = new MutableLiveData<>(false);
 
         songRepository = new SongRepository(application);
 
         songList = songRepository.getListOfSongs();
         downloadedSongs = songRepository.getDownloadsSong();
 
+        downloadingSongs = new MutableLiveData<>(new HashMap<>());
+        downloadingTaskProgress = new MutableLiveData<>(new HashMap<>());
     }
 
     public MutableLiveData<Song> getCurrSong(){
@@ -56,12 +63,8 @@ public class SharedViewModel extends AndroidViewModel {
     }
 
     public void setCurrSong(Song song){
-        currentSong.setValue(song);
-        if(mediaPlayer.isPlaying())
-            isSongPlaying.setValue(true);
-        else
-            isSongPlaying.setValue(false);
-
+        currentSong.postValue(song);
+        System.out.println(song);
     }
 
     public LiveData<PagedList<Song>> getSongList() {
@@ -76,7 +79,6 @@ public class SharedViewModel extends AndroidViewModel {
         songRepository.delete(song);
     }
 
-
     @BindingAdapter("app:songImage")
     public static void songImage(ImageView view, String imageUrl) {
         Glide.with(view.getContext())
@@ -86,4 +88,28 @@ public class SharedViewModel extends AndroidViewModel {
                 .into(view);
     }
 
+    public void downloadSong(Song song) {
+
+        downloadingSongs.getValue().put(song.getSongId(), song);
+        downloadingTaskProgress.getValue().put(song.getSongId(), 0);
+
+        DownloadSong downloadSong = new DownloadSong(song, new DownloadCallBack() {
+            @Override
+            public void onCompleteListener(Song s, String path) {
+                s.setDownloaded(true);
+                s.setSongPath(path);
+                update(s);
+            }
+
+            @Override
+            public void onProgressUpdate(Song s, int progress) {
+                HashMap<Integer, Integer> task = downloadingTaskProgress.getValue();
+                task.put(s.getSongId(), progress);
+                downloadingTaskProgress.setValue(task);
+            }
+        });
+
+        downloadSong.execute();
+
+    }
 }

@@ -50,11 +50,16 @@ public class DownloadSong extends AsyncTask<Void, Void, Void> {
             URL url = new URL(song.getSongUrl());
             connection = url.openConnection();
             connection.connect();
+            int songSize = connection.getContentLength();
+
             input = new BufferedInputStream(url.openStream());
             output = new FileOutputStream(path);
 
             byte data[] = new byte[1024];
+            long total=0;
             while ((count = input.read(data)) != -1) {
+                total = total + count;
+                onProgressUpdate((int) (total*100/songSize));
                 output.write(data, 0, count);
             }
             isDownloaded = true;
@@ -75,9 +80,13 @@ public class DownloadSong extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(aVoid);
 
         if(isDownloaded){
-            callBack.onCompleteListener(path);
+            callBack.onCompleteListener(song, path);
             Log.i("Download", "Complete");
         }
+    }
+
+    private void onProgressUpdate(int progress) {
+        callBack.onProgressUpdate(song, progress);
     }
 }
 
