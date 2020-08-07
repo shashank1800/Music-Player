@@ -80,13 +80,13 @@ public class DownloadSong extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(aVoid);
 
         if(isDownloaded){
-            callBack.onCompleteListener(song, path);
+            callBack.onCompleteListener(path);
             Log.i("Download", "Complete");
         }
     }
 
     private void onProgressUpdate(int progress) {
-        callBack.onProgressUpdate(song, progress);
+        callBack.onProgressUpdate(progress);
     }
 }
 

@@ -80,6 +80,17 @@
 
             </LinearLayout>
 
+            <com.dinuscxj.progressbar.CircleProgressBar
+                android:id="@+id/download_progress"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="20dp"/>
+
             <ImageButton
                 android:id="@+id/download_status"
                 android:layout_gravity="center"

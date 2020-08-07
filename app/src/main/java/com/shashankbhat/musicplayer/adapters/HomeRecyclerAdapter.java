@@ -13,10 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.shashankbhat.musicplayer.SharedViewModel;
 import com.shashankbhat.musicplayer.R;
+import com.shashankbhat.musicplayer.callback.DownloadCallBack;
 import com.shashankbhat.musicplayer.data.Song;
 import com.shashankbhat.musicplayer.databinding.LayoutSongViewBinding;
+import com.shashankbhat.musicplayer.task.DownloadSong;
 import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
-
 import java.io.IOException;
 
 /**
@@ -51,7 +52,7 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
                 binding.downloadStatus.setBackground(context.getDrawable(R.drawable.ic_downloads));
 
             binding.downloadStatus.setOnClickListener(view -> {
-                if(!song.isDownloaded()) viewModel.downloadSong(song);
+                if(!song.isDownloaded()) downloadSong(song, binding);
             });
 
             binding.linearLayout.setOnClickListener(this);
@@ -77,6 +78,32 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
 
             viewModel.setCurrSong(song);
         }
+    }
+
+    public void downloadSong(Song song, LayoutSongViewBinding binding) {
+
+        binding.downloadProgress.setVisibility(View.VISIBLE);
+        binding.downloadStatus.setVisibility(View.GONE);
+
+        DownloadSong downloadSong = new DownloadSong(song, new DownloadCallBack() {
+            @Override
+            public void onCompleteListener(String path) {
+                song.setDownloaded(true);
+                song.setSongPath(path);
+                viewModel.update(song);
+
+                binding.downloadStatus.setVisibility(View.VISIBLE);
+                binding.downloadProgress.setVisibility(View.GONE);
+                binding.downloadStatus.setBackground(context.getDrawable(R.drawable.ic_check));
+            }
+
+            @Override
+            public void onProgressUpdate(int progress) {
+                binding.downloadProgress.setProgress(progress);
+            }
+        });
+
+        downloadSong.execute();
     }
 
     @NonNull
