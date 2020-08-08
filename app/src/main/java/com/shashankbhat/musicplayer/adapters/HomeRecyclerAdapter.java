@@ -111,6 +111,7 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
     public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
+
         LayoutSongViewBinding binding = LayoutSongViewBinding.inflate(layoutInflater);
         return new SongViewHolder(binding);
     }

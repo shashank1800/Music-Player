@@ -18,7 +18,6 @@ import static com.shashankbhat.musicplayer.utils.Constants.TABLE_NAME;
 public class Song extends BaseObservable implements Serializable {
 
     @PrimaryKey
-    @NonNull
     private int songId;
 
     private String songName;
@@ -29,14 +28,14 @@ public class Song extends BaseObservable implements Serializable {
     private boolean isDownloaded;
     private String songPath;
 
-    public Song(int songId, String songName, String songArtist, int songReleased, String songUrl, String imageUrl, boolean isDownloaded) {
+    public Song(int songId, String songName, String songArtist, int songReleased, String songUrl, String imageUrl) {
         this.songId = songId;
         this.songName = songName;
         this.songArtist = songArtist;
         this.songReleased = songReleased;
         this.songUrl = songUrl;
         this.imageUrl = imageUrl;
-        this.isDownloaded = isDownloaded;
+        this.isDownloaded = false;
         this.songPath = "";
     }
 
@@ -123,6 +122,7 @@ public class Song extends BaseObservable implements Serializable {
         return Objects.hash(songId, songName, songArtist, songReleased, songUrl);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Song{" +

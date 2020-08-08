@@ -1,14 +1,6 @@
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<!--    <ListPreference-->
-<!--        app:defaultValue="en"-->
-<!--        app:entries="@array/languages_entries"-->
-<!--        app:entryValues="@array/languages_values"-->
-<!--        app:key="language"-->
-<!--        app:title="@string/language"-->
-<!--        app:useSimpleSummaryProvider="true" />-->
-
     <SwitchPreferenceCompat
         app:key="dark_mode"
         app:title="@string/dark_mode" />

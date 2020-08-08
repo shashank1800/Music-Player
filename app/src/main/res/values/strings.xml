@@ -29,6 +29,6 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="song_icon">Song Icon</string>
     <string name="downloading">Downloading</string>
-    <string name="no_songs_downloading">No songs downloading</string>
+    <string name="no_downloads">No downloads</string>
 
 </resources>

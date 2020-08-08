@@ -62,7 +62,7 @@ public class FileReadHelper {
                 String songUrl = song.getString("url");
                 String imageUrl = song.getString("image_url");
 
-                songList.add(new Song(id, songName, songArtist, songReleased, songUrl, imageUrl, false));
+                songList.add(new Song(id, songName, songArtist, songReleased, songUrl, imageUrl));
             }
 
         } catch (Exception ex) {

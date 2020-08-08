@@ -27,11 +27,13 @@ public class HomeFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_home, container, false);
-        binding.setLifecycleOwner(this);
+        if(binding==null) {
+            binding = DataBindingUtil.inflate(
+                    inflater, R.layout.fragment_home, container, false);
+            binding.setLifecycleOwner(this);
+        }
 
         return binding.getRoot();
     }
@@ -53,6 +55,4 @@ public class HomeFragment extends Fragment {
 
         viewModel.getSongList().observe(requireActivity(), adapter::submitList);
     }
-
-
 }

@@ -14,7 +14,7 @@
             android:id="@+id/no_songs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_songs_downloading"
+            android:text="@string/no_downloads"
             android:textColor="@color/gray"
             android:textSize="20sp"
             android:textStyle="bold"

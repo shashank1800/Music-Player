@@ -28,7 +28,7 @@ public class SongPlayerViewModel extends AndroidViewModel {
         currentTime = new MutableLiveData<>();
         endTime = new MutableLiveData<>();
 
-        currentSong = new MutableLiveData<>(new Song(0,"","",0,"","",false));
+        currentSong = new MutableLiveData<>(new Song(0,"","",0,"",""));
         isSongPlaying = new MutableLiveData<>(mediaPlayer.isPlaying());
     }
 

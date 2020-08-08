@@ -23,11 +23,8 @@ import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.karumi.dexter.listener.multi.SnackbarOnAnyDeniedMultiplePermissionsListener;
 import com.shashankbhat.musicplayer.data.Song;
 import com.shashankbhat.musicplayer.databinding.ActivityMainBinding;
 import com.shashankbhat.musicplayer.ui.song_player.SongPlayer;
@@ -75,37 +72,10 @@ public class MainActivity extends AppCompatActivity{
 
         boolean mode = sharedPreferences.getBoolean("dark_mode", false);
 
-//        String language = sharedPreferences.getString("language", "en");
-
-
-//        Resources res = getApplicationContext().getResources();
-//        DisplayMetrics dm = res.getDisplayMetrics();
-//        android.content.res.Configuration conf = res.getConfiguration();
-//        assert language != null;
-//        conf.setLocale(new Locale(language));
-//        res.updateConfiguration(conf, dm);
-
-
         if(!mode)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-//        sharedPreferences.registerOnSharedPreferenceChangeListener((sharedPreferences1, key) -> {
-//
-//            if(key.equals("language")){
-//                String lang = sharedPreferences.getString("language", "english");
-//
-//            }
-//            if(key.equals("dark_mode")){
-//                boolean mod = sharedPreferences.getBoolean("dark_mode", false);
-//                if(!mod)
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//                else
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//            }
-//
-//        });
 
     }
 
@@ -118,6 +88,7 @@ public class MainActivity extends AppCompatActivity{
             Pair<View, String> pair2 = Pair.create(binding.songArtist, getResources().getString(R.string.song_artist));
             Pair<View, String> pair3 = Pair.create(binding.songIcon, getResources().getString(R.string.song_icon));
 
+            //noinspection unchecked
             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair1, pair2, pair3);
 
             intent.putExtra(SONG, viewModel.getCurrSong().getValue());
@@ -127,14 +98,16 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void initRequestPermission() {
-        Dexter.withContext(getApplicationContext())
-                .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .withListener(new PermissionListener() {
-                    @Override public void onPermissionGranted(PermissionGrantedResponse response) {/* ... */}
-                    @Override public void onPermissionDenied(PermissionDeniedResponse response) {/* ... */}
-                    @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {/* ... */}
-                })
-                .check();
+        MultiplePermissionsListener snackbarMultiplePermissionsListener =
+                SnackbarOnAnyDeniedMultiplePermissionsListener.Builder
+                        .with(binding.constraintLayout, "App requires permission to store the downloaded song")
+                        .withOpenSettingsButton("Settings")
+                        .build();
+
+        Dexter.withContext(this)
+                .withPermissions(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ).withListener(snackbarMultiplePermissionsListener).check();
     }
 
     private void initBottomAppBar(BottomNavigationView navView) {
@@ -175,6 +148,7 @@ public class MainActivity extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==SONG_PLAYER_INTENT){
+            assert data != null;
             viewModel.setCurrSong((Song) data.getSerializableExtra(SONG));
 
             if(viewModel.mediaPlayer.isPlaying())
@@ -183,5 +157,4 @@ public class MainActivity extends AppCompatActivity{
                 viewModel.isSongPlaying.setValue(false);
         }
     }
-
 }

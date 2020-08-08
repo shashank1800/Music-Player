@@ -2,16 +2,13 @@ package com.shashankbhat.musicplayer;
 
 import android.app.Application;
 import android.media.MediaPlayer;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.paging.PagedList;
 
-import com.bumptech.glide.Glide;
 import com.shashankbhat.musicplayer.data.Song;
 import com.shashankbhat.musicplayer.database.SongRepository;
 import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
@@ -32,7 +29,7 @@ public class SharedViewModel extends AndroidViewModel {
 
     public SharedViewModel(@NonNull Application application) {
         super(application);
-        currentSong = new MutableLiveData<>(new Song(0,"","",0,"", "",false));
+        currentSong = new MutableLiveData<>(new Song(0,"","",0,"", ""));
         mediaPlayer =  UniqueMediaPlayer.getMediaPlayer();
 
         isSongLayoutVisible = new MutableLiveData<>(false);
@@ -45,38 +42,22 @@ public class SharedViewModel extends AndroidViewModel {
         downloadedSongs = songRepository.getDownloadsSong();
     }
 
-    public MutableLiveData<Song> getCurrSong(){
-        return currentSong;
+    public LiveData<PagedList<Song>> getSongList() {
+        return songList;
     }
-
     public LiveData<PagedList<Song>> getDownloadedSongs() {
         return downloadedSongs;
     }
 
-    public void setCurrSong(Song song){
-        currentSong.postValue(song);
-        System.out.println(song);
+    public MutableLiveData<Song> getCurrSong(){
+        return currentSong;
     }
-
-    public LiveData<PagedList<Song>> getSongList() {
-        return songList;
-    }
+    public void setCurrSong(Song song){ currentSong.postValue(song); }
 
     public void update(Song song){
         songRepository.update(song);
     }
-
     public void delete(Song song){
         songRepository.delete(song);
     }
-
-    @BindingAdapter("app:songImage")
-    public static void songImage(ImageView view, String imageUrl) {
-        Glide.with(view.getContext())
-                .load(imageUrl)
-                .centerCrop()
-                .placeholder(R.drawable.ic_launcher_foreground)
-                .into(view);
-    }
-
 }
