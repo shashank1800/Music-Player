@@ -16,7 +16,7 @@ import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
 
 import java.io.IOException;
 
-import static com.shashankbhat.musicplayer.adapters.HomeRecyclerAdapter.diffCallback;
+import static com.shashankbhat.musicplayer.utils.RecyclerAdapterUtils.diffCallback;
 
 /**
  * Created by SHASHANK BHAT on 28-Jul-20.
@@ -69,9 +69,7 @@ public class DownloadsRecyclerAdapter extends PagedListAdapter<Song, DownloadsRe
                 viewModel.delete(song);
             });
 
-            binding.linearLayout.setOnClickListener(v -> {
-                playAudio(song);
-            });
+            binding.linearLayout.setOnClickListener(v -> playAudio(song));
 
         }
 

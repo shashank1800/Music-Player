@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PagedListAdapter;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shashankbhat.musicplayer.SharedViewModel;
@@ -19,6 +18,8 @@ import com.shashankbhat.musicplayer.databinding.LayoutSongViewBinding;
 import com.shashankbhat.musicplayer.task.DownloadSong;
 import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
 import java.io.IOException;
+
+import static com.shashankbhat.musicplayer.utils.RecyclerAdapterUtils.diffCallback;
 
 /**
  * Created by SHASHANK BHAT on 23-Jul-20.
@@ -152,19 +153,5 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
 
         } catch (IOException ignored) { }
     }
-
-    public static final DiffUtil.ItemCallback<Song> diffCallback = new DiffUtil.ItemCallback<Song>() {
-        @Override
-        public boolean areItemsTheSame(
-                @NonNull Song oldUser, @NonNull Song newUser) {
-            return oldUser.getSongId() == newUser.getSongId();
-        }
-
-        @Override
-        public boolean areContentsTheSame(
-                @NonNull Song oldUser, @NonNull Song newUser) {
-            return oldUser.equals(newUser);
-        }
-    };
 
 }
