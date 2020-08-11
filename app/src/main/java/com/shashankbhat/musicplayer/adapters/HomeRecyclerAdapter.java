@@ -11,11 +11,11 @@ import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shashankbhat.musicplayer.SharedViewModel;
-import com.shashankbhat.musicplayer.R;
 import com.shashankbhat.musicplayer.callback.DownloadCallBack;
 import com.shashankbhat.musicplayer.data.Song;
+import com.shashankbhat.musicplayer.data.SongDownload;
 import com.shashankbhat.musicplayer.databinding.LayoutSongViewBinding;
-import com.shashankbhat.musicplayer.task.DownloadSong;
+import com.shashankbhat.musicplayer.task.DownloadSongTask;
 import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
 import java.io.IOException;
 
@@ -47,16 +47,15 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
 
         public void bindTo(Song song) {
             binding.setSong(song);
-            if(song.isDownloaded())
-                binding.downloadStatus.setBackground(context.getDrawable(R.drawable.ic_check));
-            else
-                binding.downloadStatus.setBackground(context.getDrawable(R.drawable.ic_downloads));
 
             binding.downloadStatus.setOnClickListener(view -> {
-                if(!song.isDownloaded()) downloadSong(song, binding);
+                if(!song.isDownloaded()) downloadSong(song);
             });
 
             binding.linearLayout.setOnClickListener(this);
+
+            song.songDownload = new SongDownload(binding.downloadStatus,binding.downloadProgress);
+            song.setDownloadSettings(song.isDownloaded(), song.isDownloading(), song.getProgress());
         }
 
         @Override
@@ -66,53 +65,47 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
 
             viewModel.isSongLayoutVisible.setValue(true);
             viewModel.isSongPlaying.setValue(true);
-
             viewModel.setCurrSong(song);
 
             mediaPlayer.setOnCompletionListener(MediaPlayer::start);
 
-            assert song != null;
-            if(song.isDownloaded())
-                playOfflineSong(song);
-            else
-                playOnlineSong(song);
+            if(song != null) {
+                if (song.isDownloaded())
+                    playOfflineSong(song);
+                else
+                    playOnlineSong(song);
+            }
 
             viewModel.setCurrSong(song);
         }
     }
 
-    public void downloadSong(Song song, LayoutSongViewBinding binding) {
+    public void downloadSong(Song song) {
 
-        binding.downloadProgress.setVisibility(View.VISIBLE);
-        binding.downloadStatus.setVisibility(View.GONE);
+        song.setDownloadSettings(false,true,0);
 
-        DownloadSong downloadSong = new DownloadSong(song, new DownloadCallBack() {
+        new DownloadSongTask(song, new DownloadCallBack() {
             @Override
             public void onCompleteListener(String path) {
-                song.setDownloaded(true);
+                song.setDownloadSettings(true,false,100);
                 song.setSongPath(path);
                 viewModel.update(song);
-
-                binding.downloadStatus.setVisibility(View.VISIBLE);
-                binding.downloadProgress.setVisibility(View.GONE);
-                binding.downloadStatus.setBackground(context.getDrawable(R.drawable.ic_check));
             }
 
             @Override
             public void onProgressUpdate(int progress) {
-                binding.downloadProgress.setProgress(progress);
+                song.setDownloadSettings(false,true, progress);
             }
-        });
+        }).execute();
 
-        downloadSong.execute();
     }
 
     @NonNull
     @Override
     public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
 
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
         LayoutSongViewBinding binding = LayoutSongViewBinding.inflate(layoutInflater);
         return new SongViewHolder(binding);
     }

@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +29,9 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(binding==null) {
-            binding = DataBindingUtil.inflate(
-                    inflater, R.layout.fragment_home, container, false);
-            binding.setLifecycleOwner(this);
-        }
+        binding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_home, container, false);
+        binding.setLifecycleOwner(this);
 
         return binding.getRoot();
     }
@@ -42,11 +39,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-//        if(savedInstanceState!=null)
-//            Log.i("onViewStateRestored", "onViewStateRestored: "+ savedInstanceState.getString("key"));
-
         viewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel.class);
 
         HomeRecyclerAdapter adapter = new HomeRecyclerAdapter(viewModel);
@@ -61,13 +53,5 @@ public class HomeFragment extends Fragment {
         viewModel.getSongList().observe(requireActivity(), adapter::submitList);
     }
 
-//    @Override
-//    public void onSaveInstanceState(@NonNull Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//
-//        outState.putString("key","value");
-//
-//        Log.i("onViewStateRestored", "onSave");
-//    }
 
 }

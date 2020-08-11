@@ -1,6 +1,5 @@
 package com.shashankbhat.musicplayer.adapters;
 
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ public class DownloadsRecyclerAdapter extends PagedListAdapter<Song, DownloadsRe
 
     private SharedViewModel viewModel;
     private MediaPlayer mediaPlayer;
-    private Context context;
 
     public DownloadsRecyclerAdapter(SharedViewModel viewModel) {
         super(diffCallback);
@@ -36,8 +34,7 @@ public class DownloadsRecyclerAdapter extends PagedListAdapter<Song, DownloadsRe
     @NonNull
     @Override
     public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         LayoutSongDownloadsViewBinding binding = LayoutSongDownloadsViewBinding.inflate(layoutInflater);
         return new SongViewHolder(binding);
     }
@@ -67,6 +64,16 @@ public class DownloadsRecyclerAdapter extends PagedListAdapter<Song, DownloadsRe
                 song.setSongPath("");
                 song.setDownloaded(false);
                 viewModel.delete(song);
+
+//                File songFile = new File(song.getSongPath());
+//
+//                System.out.println(song.getSongPath());
+//
+//                if (songFile.delete()) {
+//                    System.out.println("file Deleted :");
+//                } else {
+//                    System.out.println("file not Deleted :");
+//                }
             });
 
             binding.linearLayout.setOnClickListener(v -> playAudio(song));
@@ -90,7 +97,6 @@ public class DownloadsRecyclerAdapter extends PagedListAdapter<Song, DownloadsRe
 
             viewModel.isSongLayoutVisible.setValue(true);
             viewModel.isSongPlaying.setValue(true);
-//            viewModel.setCurrSong(song);
 
         } catch (IOException ignored) { }
     }

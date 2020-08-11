@@ -1,9 +1,16 @@
 package com.shashankbhat.musicplayer.data;
+
+import android.content.Context;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.shashankbhat.musicplayer.R;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,7 +22,7 @@ import static com.shashankbhat.musicplayer.utils.Constants.TABLE_NAME;
  */
 
 @Entity(tableName = TABLE_NAME)
-public class Song extends BaseObservable implements Serializable {
+public class Song implements Serializable {
 
     @PrimaryKey
     private int songId;
@@ -28,6 +35,10 @@ public class Song extends BaseObservable implements Serializable {
     private boolean isDownloaded;
     private String songPath;
 
+    @Ignore public SongDownload songDownload;
+    @Ignore private boolean isDownloading;
+    @Ignore private int progress;
+
     public Song(int songId, String songName, String songArtist, int songReleased, String songUrl, String imageUrl) {
         this.songId = songId;
         this.songName = songName;
@@ -37,13 +48,13 @@ public class Song extends BaseObservable implements Serializable {
         this.imageUrl = imageUrl;
         this.isDownloaded = false;
         this.songPath = "";
+
     }
 
     public int getSongId() {
         return songId;
     }
 
-    @Bindable
     public String getSongName() {
         return songName;
     }
@@ -60,10 +71,6 @@ public class Song extends BaseObservable implements Serializable {
         return songUrl;
     }
 
-    public void setSongId(int songId) {
-        this.songId = songId;
-    }
-
     public void setSongName(String songName) {
         this.songName = songName;
     }
@@ -76,8 +83,20 @@ public class Song extends BaseObservable implements Serializable {
         this.songReleased = songReleased;
     }
 
-    public void setSongUrl(String songUrl) {
-        this.songUrl = songUrl;
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+
+    public void setDownloading(boolean downloading) {
+        isDownloading = downloading;
+    }
+
+    public boolean isDownloading() {
+        return isDownloading;
     }
 
     public boolean isDownloaded() {
@@ -103,7 +122,6 @@ public class Song extends BaseObservable implements Serializable {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -133,5 +151,30 @@ public class Song extends BaseObservable implements Serializable {
                 ", songUrl='" + songUrl + '\'' +
                 ", isDownloaded=" + isDownloaded +
                 '}';
+    }
+
+    public void setDownloadSettings(boolean downloaded, boolean downloading, int progress) {
+
+        setDownloaded(downloaded);
+        setDownloading(downloading);
+        setProgress(progress);
+
+        Context context = songDownload.downloadStatus.getContext();
+
+        if(downloading){
+            songDownload.downloadStatus.setVisibility(View.GONE);
+            songDownload.progressBar.setVisibility(View.VISIBLE);
+            songDownload.progressBar.setProgress(progress);
+        }
+        else {
+            songDownload.downloadStatus.setVisibility(View.VISIBLE);
+            songDownload.progressBar.setVisibility(View.GONE);
+
+            if(downloaded) {
+                songDownload.downloadStatus.setBackground(context.getDrawable(R.drawable.ic_check));
+            }else
+                songDownload.downloadStatus.setBackground(context.getDrawable(R.drawable.ic_downloads));
+
+        }
     }
 }

@@ -18,14 +18,14 @@ import java.net.URLConnection;
 /**
  * Created by SHASHANK BHAT on 27-Jul-20.
  */
-public class DownloadSong extends AsyncTask<Void, Void, Void> {
+public class DownloadSongTask extends AsyncTask<Void, Void, Void> {
 
     private Song song;
     private boolean isDownloaded = false;
     private DownloadCallBack callBack;
     private String path;
 
-    public DownloadSong(Song song, DownloadCallBack callBack) {
+    public DownloadSongTask(Song song, DownloadCallBack callBack) {
         this.song = song;
         this.callBack = callBack;
         String dir = Environment.getExternalStorageDirectory()+ "/Media Player/";

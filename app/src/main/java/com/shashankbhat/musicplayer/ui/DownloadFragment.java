@@ -26,10 +26,8 @@ public class DownloadFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if(binding==null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_download, container, false);
-            binding.setLifecycleOwner(this);
-        }
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_download, container, false);
+        binding.setLifecycleOwner(this);
 
         return binding.getRoot();
     }
