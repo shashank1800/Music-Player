@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -38,6 +36,7 @@ public class Song implements Serializable {
     @Ignore public SongDownload songDownload;
     @Ignore private boolean isDownloading;
     @Ignore private int progress;
+//    @Ignore MyService.MyBinder myBinder;
 
     public Song(int songId, String songName, String songArtist, int songReleased, String songUrl, String imageUrl) {
         this.songId = songId;
@@ -177,4 +176,19 @@ public class Song implements Serializable {
 
         }
     }
+
+//    public ServiceConnection serviceConnection = new ServiceConnection() {
+//        @Override
+//        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+//            MyService.MyBinder binder = (MyService.MyBinder)iBinder;
+//            myBinder = binder;
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName componentName) {
+//
+//            myBinder = null;
+//
+//        }
+//    };
 }

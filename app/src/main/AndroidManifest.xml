@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".application.App"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,8 +17,8 @@
 
         <activity
             android:name=".ui.song_player.SongPlayer"
+            android:launchMode="singleTop"
             android:theme="@style/PlayerTheme" />
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,6 +26,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".service.MediaPlayerService"
+            android:enabled="true" />
+
+        <receiver android:name=".service.NotificationActionService" />
+
     </application>
 
 </manifest>

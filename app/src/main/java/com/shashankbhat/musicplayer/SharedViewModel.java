@@ -1,7 +1,10 @@
 package com.shashankbhat.musicplayer;
 
 import android.app.Application;
+import android.content.ComponentName;
+import android.content.ServiceConnection;
 import android.media.MediaPlayer;
+import android.os.IBinder;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.Observable;
@@ -19,7 +22,7 @@ import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
  * Created by SHASHANK BHAT on 23-Jul-20.
  * shashankbhat1800@gmail.com
  */
-public class SharedViewModel extends AndroidViewModel implements Observable {
+public class SharedViewModel extends AndroidViewModel {
 
     private MutableLiveData<Song> currentSong ;
 
@@ -28,9 +31,6 @@ public class SharedViewModel extends AndroidViewModel implements Observable {
 
     public MediaPlayer mediaPlayer;
     private SongRepository songRepository;
-
-    private PropertyChangeRegistry callbacks = new PropertyChangeRegistry();
-
 
     public SharedViewModel(@NonNull Application application) {
         super(application);
@@ -66,13 +66,6 @@ public class SharedViewModel extends AndroidViewModel implements Observable {
         songRepository.delete(song);
     }
 
-    @Override
-    public void addOnPropertyChangedCallback(OnPropertyChangedCallback callback) {
-        callbacks.add(callback);
-    }
 
-    @Override
-    public void removeOnPropertyChangedCallback(OnPropertyChangedCallback callback) {
-        callbacks.remove(callback);
-    }
+
 }

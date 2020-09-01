@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.SeekBar;
@@ -40,10 +39,6 @@ public class SongPlayer extends AppCompatActivity {
         viewModel.setCurrentSong(song);
         binding.setViewModel(viewModel);
 
-        Intent intent = new Intent();
-        intent.putExtra(SONG, viewModel.getCurrentSong().getValue());
-        setResult(RESULT_OK, intent);
-
         initPauseClickListener();
         initPlayClickListener();
         initPlayerSeeker();
@@ -76,9 +71,9 @@ public class SongPlayer extends AppCompatActivity {
         binding.songSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean seek) {
 
-                if(b)
+                if(seek)
                 {
                     viewModel.mediaPlayer.seekTo(progress);
                     seekBar.setProgress(progress);

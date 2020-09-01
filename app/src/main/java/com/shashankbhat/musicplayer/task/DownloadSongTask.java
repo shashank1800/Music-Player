@@ -24,10 +24,14 @@ public class DownloadSongTask extends AsyncTask<Void, Void, Void> {
     private boolean isDownloaded = false;
     private DownloadCallBack callBack;
     private String path;
+    private long total;
+    private int songSize;
+    private int count=0;
 
     public DownloadSongTask(Song song, DownloadCallBack callBack) {
         this.song = song;
         this.callBack = callBack;
+
         String dir = Environment.getExternalStorageDirectory()+ "/Media Player/";
 
         File folder = new File(dir);
@@ -50,16 +54,17 @@ public class DownloadSongTask extends AsyncTask<Void, Void, Void> {
             URL url = new URL(song.getSongUrl());
             connection = url.openConnection();
             connection.connect();
-            int songSize = connection.getContentLength();
+            songSize = connection.getContentLength();
 
             input = new BufferedInputStream(url.openStream());
             output = new FileOutputStream(path);
 
             byte data[] = new byte[1024];
-            long total=0;
+            total=0;
             while ((count = input.read(data)) != -1) {
                 total = total + count;
-                onProgressUpdate((int) (total*100/songSize));
+//                onProgressUpdate((int) (total*100/songSize));
+                publishProgress();
                 output.write(data, 0, count);
             }
             isDownloaded = true;
@@ -76,6 +81,16 @@ public class DownloadSongTask extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
+    protected void onProgressUpdate(Void... values) {
+
+        if(count==1000){
+            callBack.onProgressUpdate((int) (total*100/songSize));
+            count = 0;
+        }
+        count++;
+    }
+
+    @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
@@ -85,9 +100,14 @@ public class DownloadSongTask extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    private void onProgressUpdate(int progress) {
-        callBack.onProgressUpdate(progress);
-    }
+//    private void onProgressUpdate(int progress) {
+//
+//        if(count==1000){
+//
+//            count = 0;
+//        }
+//        count++;
+//    }
 }
 
 

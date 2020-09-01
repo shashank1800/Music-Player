@@ -33,6 +33,7 @@ public class SongRepository {
     }
 
     public void update(Song song){
+        System.out.println("update"+song.getSongName());
         new UpdateTask(song).execute();
     }
 
