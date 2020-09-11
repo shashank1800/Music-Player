@@ -1,14 +1,9 @@
-package com.shashankbhat.musicplayer;
+package com.shashankbhat.musicplayer.viewmodel;
 
 import android.app.Application;
-import android.content.ComponentName;
-import android.content.ServiceConnection;
 import android.media.MediaPlayer;
-import android.os.IBinder;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.Observable;
-import androidx.databinding.PropertyChangeRegistry;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -32,14 +27,14 @@ public class SharedViewModel extends AndroidViewModel {
     public MediaPlayer mediaPlayer;
     private SongRepository songRepository;
 
-    public SharedViewModel(@NonNull Application application) {
+    public SharedViewModel(@NonNull Application application, Song currSong) {
         super(application);
-        currentSong = new MutableLiveData<>(new Song(0,"","",0,"", ""));
+        currentSong = new MutableLiveData<>(currSong);
         mediaPlayer =  UniqueMediaPlayer.getMediaPlayer();
 
-        isSongLayoutVisible = new MutableLiveData<>(false);
+        isSongLayoutVisible = new MutableLiveData<>(mediaPlayer.isPlaying());
         isDownloadLoaderVisible = new MutableLiveData<>(false);
-        isSongPlaying = new MutableLiveData<>(false);
+        isSongPlaying = new MutableLiveData<>(mediaPlayer.isPlaying());
 
         songRepository = new SongRepository(application);
 
@@ -65,7 +60,6 @@ public class SharedViewModel extends AndroidViewModel {
     public void delete(Song song){
         songRepository.delete(song);
     }
-
 
 
 }

@@ -1,19 +1,13 @@
 package com.shashankbhat.musicplayer;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityOptionsCompat;
@@ -29,37 +23,48 @@ import androidx.preference.PreferenceManager;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.karumi.dexter.listener.multi.SnackbarOnAnyDeniedMultiplePermissionsListener;
+import com.shashankbhat.musicplayer.viewmodel.SharedViewModel;
+import com.shashankbhat.musicplayer.data.Song;
 import com.shashankbhat.musicplayer.databinding.ActivityMainBinding;
 import com.shashankbhat.musicplayer.ui.song_player.SongPlayer;
-import com.shashankbhat.musicplayer.utils.CreateNotification;
 import com.shashankbhat.musicplayer.utils.Player;
 import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
+import com.shashankbhat.musicplayer.viewmodel.SharedViewModelFactory;
 
-import java.util.Objects;
-import java.util.logging.Logger;
-
-import static com.shashankbhat.musicplayer.service.MediaPlayerService.DOWNLOADED;
-import static com.shashankbhat.musicplayer.service.NotificationActionService.ACTION_NAME;
 import static com.shashankbhat.musicplayer.utils.Constants.SONG;
+import static com.shashankbhat.musicplayer.utils.Constants.SONG_ARTIST;
+import static com.shashankbhat.musicplayer.utils.Constants.SONG_IMAGE_URL;
+import static com.shashankbhat.musicplayer.utils.Constants.SONG_NAME;
 
 
 public class MainActivity extends AppCompatActivity implements Player {
 
     public final int SONG_PLAYER_INTENT = 123;
-    public static final String BROADCAST = "com.shashankbhat.musicplayer.BROADCAST";
+
 
     private ActivityMainBinding binding;
     private SharedViewModel viewModel;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setLifecycleOwner(this);
 
-        viewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        //Receives intent when notification is clicked (Pending intent calls activity with intent)
+        Song intentSong = (Song) getIntent().getSerializableExtra(SONG);
+
+        if(intentSong==null){
+            String songName = sharedPref.getString(SONG_NAME, "");
+            String songArtist = sharedPref.getString(SONG_ARTIST, "");
+            String songImageUrl = sharedPref.getString(SONG_IMAGE_URL, "");
+
+            intentSong = new Song(1, songName, songArtist, 2017, "",songImageUrl);
+        }
+
+//        viewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
+        viewModel = ViewModelProviders.of(this, new SharedViewModelFactory(getApplication(), intentSong)).get(SharedViewModel.class);
         binding.setViewModel(viewModel);
 
         binding.pause.setOnClickListener(v -> pauseSong());
@@ -70,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements Player {
 
         initBottomAppBar();
         initPlayerClickListener();
+
     }
 
     private void initPlayerClickListener() {
@@ -88,8 +94,8 @@ public class MainActivity extends AppCompatActivity implements Player {
             startActivityForResult(intent, SONG_PLAYER_INTENT, options.toBundle());
         });
 
-    }
 
+    }
 
     private void initBottomAppBar() {
 
@@ -116,47 +122,12 @@ public class MainActivity extends AppCompatActivity implements Player {
         }
     }
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = Objects.requireNonNull(intent.getExtras()).getString(ACTION_NAME);
-
-            assert action != null;
-            switch (action) {
-                case CreateNotification.ACTION_PLAY:
-                    if (viewModel.isSongPlaying.getValue())
-                        pauseSong();
-                    else
-                        playSong();
-                    break;
-                case DOWNLOADED:
-                    viewModel.isDownloadLoaderVisible.postValue(false);
-                    break;
-            }
-
-        }
-    };
-
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(broadcastReceiver, new IntentFilter(BROADCAST));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(broadcastReceiver);
-    }
 
     @Override
     public void playSong() {
         if (!UniqueMediaPlayer.getMediaPlayer().isPlaying()) {
             UniqueMediaPlayer.getMediaPlayer().start();
             viewModel.isSongPlaying.setValue(true);
-            CreateNotification.sendOnChannel(this, viewModel.getCurrSong().getValue(), R.drawable.ic_pause, "Pause");
         }
     }
 
@@ -165,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements Player {
         if (UniqueMediaPlayer.getMediaPlayer().isPlaying()) {
             UniqueMediaPlayer.getMediaPlayer().pause();
             viewModel.isSongPlaying.setValue(false);
-            CreateNotification.sendOnChannel(this, viewModel.getCurrSong().getValue(), R.drawable.ic_play, "Play");
         }
     }
 

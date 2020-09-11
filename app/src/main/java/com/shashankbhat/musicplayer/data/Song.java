@@ -177,18 +177,4 @@ public class Song implements Serializable {
         }
     }
 
-//    public ServiceConnection serviceConnection = new ServiceConnection() {
-//        @Override
-//        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-//            MyService.MyBinder binder = (MyService.MyBinder)iBinder;
-//            myBinder = binder;
-//        }
-//
-//        @Override
-//        public void onServiceDisconnected(ComponentName componentName) {
-//
-//            myBinder = null;
-//
-//        }
-//    };
 }

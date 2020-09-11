@@ -1,7 +1,10 @@
 package com.shashankbhat.musicplayer.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,19 +12,22 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shashankbhat.musicplayer.R;
-import com.shashankbhat.musicplayer.SharedViewModel;
+import com.shashankbhat.musicplayer.service.MediaPlayerService;
+import com.shashankbhat.musicplayer.viewmodel.SharedViewModel;
 import com.shashankbhat.musicplayer.callback.DownloadCallBack;
 import com.shashankbhat.musicplayer.data.Song;
 import com.shashankbhat.musicplayer.data.SongDownload;
 import com.shashankbhat.musicplayer.databinding.LayoutSongViewBinding;
-import com.shashankbhat.musicplayer.service.MediaPlayerService;
 import com.shashankbhat.musicplayer.task.DownloadSongTask;
 import com.shashankbhat.musicplayer.utils.Constants;
-import com.shashankbhat.musicplayer.utils.CreateNotification;
+import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
+
+import java.io.IOException;
 
 import static com.shashankbhat.musicplayer.utils.RecyclerAdapterUtils.diffCallback;
 
@@ -33,10 +39,12 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
 
     private SharedViewModel viewModel;
     private Context context;
+    private MediaPlayer mediaPlayer;
 
     public HomeRecyclerAdapter(SharedViewModel viewModel) {
         super(diffCallback);
         this.viewModel = viewModel;
+        mediaPlayer = UniqueMediaPlayer.getMediaPlayer();
     }
 
     public class SongViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -71,19 +79,32 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
             viewModel.setCurrSong(song);
 
             assert song != null;
-            if(!song.isDownloaded())
+            if (!song.isDownloaded())
                 viewModel.isDownloadLoaderVisible.setValue(true);
 
+            if (song.isDownloaded())
+                playOfflineSong(song);
+            else
+                playOnlineSong(song);
+
             Intent intent = new Intent(context, MediaPlayerService.class);
-            context.stopService(intent);
-
             intent.putExtra(Constants.SONG, song);
-            context.startService(intent);
 
-            CreateNotification.sendOnChannel(context, song, R.drawable.ic_pause, "Pause");
+            ContextCompat.startForegroundService(context, intent);
 
-            viewModel.setCurrSong(song);
+            saveInSharedPreference(context, song);
         }
+    }
+
+    private void saveInSharedPreference(Context context, Song song) {
+        SharedPreferences sharedPref = ((Activity)context).getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        editor.putString(Constants.SONG_NAME, song.getSongName());
+        editor.putString(Constants.SONG_ARTIST, song.getSongArtist());
+        editor.putString(Constants.SONG_IMAGE_URL, song.getImageUrl());
+
+        editor.apply();
     }
 
     public void downloadSong(Song song) {
@@ -100,10 +121,39 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
 
             @Override
             public void onProgressUpdate(int progress) {
-                song.setDownloadSettings(false,true, progress);
+                song.setDownloadSettings(false, true, progress);
             }
         }).execute();
 
+    }
+
+    private void playOnlineSong(Song song) {
+
+        try {
+            String url = song.getSongUrl();
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(url);
+            mediaPlayer.setOnPreparedListener(mp -> {
+                viewModel.isDownloadLoaderVisible.setValue(false);
+                mp.start();
+            });
+            mediaPlayer.prepareAsync();
+
+        } catch (IOException ignored) {
+        }
+    }
+
+    private void playOfflineSong(Song song) {
+
+        try {
+            String path = song.getSongPath();
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(path);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+
+        } catch (IOException ignored) {
+        }
     }
 
     @NonNull

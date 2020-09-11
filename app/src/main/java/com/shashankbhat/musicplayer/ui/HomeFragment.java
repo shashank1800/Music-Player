@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.shashankbhat.musicplayer.SharedViewModel;
+import com.shashankbhat.musicplayer.viewmodel.SharedViewModel;
 import com.shashankbhat.musicplayer.R;
 import com.shashankbhat.musicplayer.adapters.HomeRecyclerAdapter;
 import com.shashankbhat.musicplayer.databinding.FragmentHomeBinding;

@@ -2,17 +2,23 @@ package com.shashankbhat.musicplayer.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import androidx.annotation.Nullable;
 
 import com.shashankbhat.musicplayer.data.Song;
 import com.shashankbhat.musicplayer.utils.Constants;
+import com.shashankbhat.musicplayer.utils.CreateNotification;
 import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-import static com.shashankbhat.musicplayer.service.NotificationActionService.ACTION_NAME;
+import static com.shashankbhat.musicplayer.utils.Constants.SONG_NOTIFICATION_ID;
 
 /**
  * Created by SHASHANK BHAT on 29-Aug-20.
@@ -47,49 +53,34 @@ public class MediaPlayerService extends Service {
 
         Song song = (Song) intent.getSerializableExtra(Constants.SONG);
 
-        assert song != null;
-        if (song.isDownloaded())
-            playOfflineSong(song);
-        else
-            playOnlineSong(song);
-
         mediaPlayer.setOnCompletionListener(MediaPlayer::start);
 
-        return START_STICKY;
+        startForeground(SONG_NOTIFICATION_ID, CreateNotification.sendOnChannel(getApplicationContext(), song));
+
+        return START_NOT_STICKY;
+    }
+
+
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            // Log exception
+            return null;
+        }
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
         mediaPlayer.pause();
         return super.onUnbind(intent);
-    }
-
-    private void playOnlineSong(Song song) {
-
-        try {
-            String url = song.getSongUrl();
-            mediaPlayer.reset();
-            mediaPlayer.setDataSource(url);
-            mediaPlayer.setOnPreparedListener(mp -> {
-                sendBroadcast(new Intent(getApplicationContext(), NotificationActionService.class).putExtra(ACTION_NAME, DOWNLOADED));
-                mp.start();
-            });
-            mediaPlayer.prepareAsync();
-
-        } catch (IOException ignored) { }
-    }
-
-    private void playOfflineSong(Song song) {
-
-        try {
-            String path = song.getSongPath();
-
-            mediaPlayer.reset();
-            mediaPlayer.setDataSource(path);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-
-        } catch (IOException ignored) { }
     }
 
 }

@@ -20,8 +20,9 @@ public class SongRepository {
     public SongRepository(Application application){
         SongDatabase songDatabase = SongDatabase.getInstance(application.getApplicationContext());
         songDao = songDatabase.mSongDao();
-        listOfSongs = new LivePagedListBuilder<>(this.songDao.getAllSongs(),/*Page size*/ 10).build();
-        downloadsSong = new LivePagedListBuilder<>(this.songDao.getDownloadSongs(),/*Page size*/ 10).build();
+
+        listOfSongs = new LivePagedListBuilder<>(this.songDao.getAllSongs(),/*Page size*/ 20).build();
+        downloadsSong = new LivePagedListBuilder<>(this.songDao.getDownloadSongs(),/*Page size*/ 20).build();
     }
 
     public LiveData<PagedList<Song>> getListOfSongs() {

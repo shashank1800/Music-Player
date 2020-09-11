@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.shashankbhat.musicplayer.SharedViewModel" />
+            type="com.shashankbhat.musicplayer.viewmodel.SharedViewModel" />
 
         <import type="android.view.View"/>
     </data>

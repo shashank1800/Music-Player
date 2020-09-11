@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.shashankbhat.musicplayer.SharedViewModel;
+import com.shashankbhat.musicplayer.viewmodel.SharedViewModel;
 import com.shashankbhat.musicplayer.R;
 import com.shashankbhat.musicplayer.adapters.DownloadsRecyclerAdapter;
 import com.shashankbhat.musicplayer.databinding.FragmentDownloadBinding;
