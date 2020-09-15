@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.shashankbhat.musicplayer.R;
 import com.shashankbhat.musicplayer.service.MediaPlayerService;
 import com.shashankbhat.musicplayer.viewmodel.SharedViewModel;
 import com.shashankbhat.musicplayer.callback.DownloadCallBack;
@@ -117,6 +116,7 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
                 song.setDownloadSettings(true,false,100);
                 song.setSongPath(path);
                 viewModel.update(song);
+
             }
 
             @Override
@@ -139,8 +139,7 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
             });
             mediaPlayer.prepareAsync();
 
-        } catch (IOException ignored) {
-        }
+        } catch (IOException ignored) { }
     }
 
     private void playOfflineSong(Song song) {
@@ -152,8 +151,7 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
             mediaPlayer.prepare();
             mediaPlayer.start();
 
-        } catch (IOException ignored) {
-        }
+        } catch (IOException ignored) { }
     }
 
     @NonNull

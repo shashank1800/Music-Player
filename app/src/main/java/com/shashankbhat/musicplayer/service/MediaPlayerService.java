@@ -6,11 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.shashankbhat.musicplayer.data.Song;
 import com.shashankbhat.musicplayer.utils.Constants;
-import com.shashankbhat.musicplayer.utils.CreateNotification;
+import com.shashankbhat.musicplayer.notification.CreateNotification;
 import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
 
 import java.io.IOException;
@@ -18,6 +20,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static com.shashankbhat.musicplayer.utils.Constants.SONG;
 import static com.shashankbhat.musicplayer.utils.Constants.SONG_NOTIFICATION_ID;
 
 /**
@@ -27,7 +30,6 @@ public class MediaPlayerService extends Service {
 
 //    IBinder myBinder = new MyBinder();
 
-    public static final String DOWNLOADED = "DOWNLOADED";
     private MediaPlayer mediaPlayer;
 
     @Nullable
@@ -51,16 +53,14 @@ public class MediaPlayerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        Log.i("Service", "onStartCommand");
+
         Song song = (Song) intent.getSerializableExtra(Constants.SONG);
-
         mediaPlayer.setOnCompletionListener(MediaPlayer::start);
-
         startForeground(SONG_NOTIFICATION_ID, CreateNotification.sendOnChannel(getApplicationContext(), song));
 
         return START_NOT_STICKY;
     }
-
-
 
     public static Bitmap getBitmapFromURL(String src) {
         try {
@@ -69,8 +69,7 @@ public class MediaPlayerService extends Service {
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
+            return BitmapFactory.decodeStream(input);
         } catch (IOException e) {
             // Log exception
             return null;

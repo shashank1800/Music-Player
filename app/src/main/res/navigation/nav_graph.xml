@@ -7,19 +7,19 @@
     <fragment
         android:id="@+id/navigation_downloads"
         android:name="com.shashankbhat.musicplayer.ui.DownloadFragment"
-        android:label="@string/downloads">
-    </fragment>
+        android:label="@string/downloads"></fragment>
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.shashankbhat.musicplayer.ui.HomeFragment"
-        android:label="@string/home">
-    </fragment>
+        android:label="@string/home"></fragment>
 
     <fragment
         android:id="@+id/navigation_setting"
         android:name="com.shashankbhat.musicplayer.ui.SettingsFragment"
-        android:label="@string/settings">
-    </fragment>
+        android:label="@string/settings"></fragment>
+    <deepLink
+        android:id="@+id/deepLink"
+        app:uri="shashankbhat.com/shashank/1800" />
 
 </navigation>

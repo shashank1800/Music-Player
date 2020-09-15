@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -23,6 +26,7 @@ import androidx.preference.PreferenceManager;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.karumi.dexter.listener.multi.SnackbarOnAnyDeniedMultiplePermissionsListener;
+import com.shashankbhat.musicplayer.service.MyJobIntentService;
 import com.shashankbhat.musicplayer.viewmodel.SharedViewModel;
 import com.shashankbhat.musicplayer.data.Song;
 import com.shashankbhat.musicplayer.databinding.ActivityMainBinding;
@@ -40,7 +44,6 @@ import static com.shashankbhat.musicplayer.utils.Constants.SONG_NAME;
 public class MainActivity extends AppCompatActivity implements Player {
 
     public final int SONG_PLAYER_INTENT = 123;
-
 
     private ActivityMainBinding binding;
     private SharedViewModel viewModel;
@@ -162,6 +165,19 @@ public class MainActivity extends AppCompatActivity implements Player {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+//        Intent intent = new Intent(MainActivity.this, MyJobIntentService.class);
+
+//        intent.putExtra(SONG, song);
+//        MyJobIntentService.startJobIntentService(MainActivity.this, intent);
+
+        Log.i("Service", "Started");
 
     }
 }

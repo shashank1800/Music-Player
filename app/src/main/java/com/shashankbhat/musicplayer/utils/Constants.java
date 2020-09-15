@@ -15,4 +15,6 @@ public class Constants {
     public static final String SONG_NAME = "SONG_NAME";
     public static final String SONG_ARTIST = "SONG_ARTIST";
     public static final String SONG_IMAGE_URL = "SONG_IMAGE_URL";
+
+    public static final int JOB_ID = 105;
 }

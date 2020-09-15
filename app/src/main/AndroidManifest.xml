@@ -7,6 +7,9 @@
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+<!--    JobIntentService permission in some case-->
+<!--    <uses-permission android:name="android.permission.WAKE_LOCK" />-->
+
     <application
         android:name=".application.App"
         android:allowBackup="true"
@@ -33,7 +36,15 @@
             android:name=".service.MediaPlayerService"
             android:enabled="true" />
 
-        <receiver android:name=".service.NotificationActionService" />
+        <receiver android:name=".broadcast.NotificationActionReceiver" />
+
+        <service
+            android:name=".service.MyJobIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name=".service.MyJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
     </application>
 
