@@ -37,7 +37,7 @@ public class NotificationActionReceiver extends BroadcastReceiver {
             context.stopService(songIntent);
         }
         else {
-            context.startForegroundService(songIntent);
+            context.startService(songIntent);
             UniqueMediaPlayer.getMediaPlayer().start();
         }
 

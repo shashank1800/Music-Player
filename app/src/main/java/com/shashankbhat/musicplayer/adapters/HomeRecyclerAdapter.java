@@ -89,7 +89,7 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
             Intent intent = new Intent(context, MediaPlayerService.class);
             intent.putExtra(Constants.SONG, song);
 
-            ContextCompat.startForegroundService(context, intent);
+            context.startService(intent);
 
             saveInSharedPreference(context, song);
         }
