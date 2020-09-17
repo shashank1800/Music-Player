@@ -26,7 +26,6 @@ import androidx.preference.PreferenceManager;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.karumi.dexter.listener.multi.SnackbarOnAnyDeniedMultiplePermissionsListener;
-import com.shashankbhat.musicplayer.service.MyJobIntentService;
 import com.shashankbhat.musicplayer.viewmodel.SharedViewModel;
 import com.shashankbhat.musicplayer.data.Song;
 import com.shashankbhat.musicplayer.databinding.ActivityMainBinding;

@@ -56,7 +56,6 @@ public class MediaPlayerService extends Service {
         Log.i("Service", "onStartCommand");
 
         Song song = (Song) intent.getSerializableExtra(Constants.SONG);
-        mediaPlayer.setOnCompletionListener(MediaPlayer::start);
         startForeground(SONG_NOTIFICATION_ID, CreateNotification.sendOnChannel(getApplicationContext(), song));
 
         return START_NOT_STICKY;

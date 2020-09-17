@@ -5,14 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,7 +24,6 @@ import com.shashankbhat.musicplayer.utils.Constants;
 import com.shashankbhat.musicplayer.utils.UniqueMediaPlayer;
 
 import java.io.IOException;
-
 import static com.shashankbhat.musicplayer.utils.RecyclerAdapterUtils.diffCallback;
 
 /**
@@ -67,31 +63,32 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
             song.setDownloadSettings(song.isDownloaded(), song.isDownloading(), song.getProgress());
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onClick(View v) {
 
             Song song = getItem(getAdapterPosition());
 
-            viewModel.isSongLayoutVisible.setValue(true);
-            viewModel.isSongPlaying.setValue(true);
-            viewModel.setCurrSong(song);
+            if(song!=null){
+                viewModel.isSongLayoutVisible.setValue(true);
+                viewModel.isSongPlaying.setValue(true);
+                viewModel.setCurrSong(song);
 
-            assert song != null;
-            if (!song.isDownloaded())
-                viewModel.isDownloadLoaderVisible.setValue(true);
+                if (!song.isDownloaded())
+                    viewModel.isDownloadLoaderVisible.setValue(true);
 
-            if (song.isDownloaded())
-                playOfflineSong(song);
-            else
-                playOnlineSong(song);
+                if (song.isDownloaded())
+                    playOfflineSong(song);
+                else
+                    playOnlineSong(song);
 
-            Intent intent = new Intent(context, MediaPlayerService.class);
-            intent.putExtra(Constants.SONG, song);
+                Intent intent = new Intent(context, MediaPlayerService.class);
+                intent.putExtra(Constants.SONG, song);
 
-            context.startService(intent);
+                context.startService(intent);
 
-            saveInSharedPreference(context, song);
+                saveInSharedPreference(context, song);
+            }
+
         }
     }
 
@@ -106,6 +103,7 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
         editor.apply();
     }
 
+
     public void downloadSong(Song song) {
 
         song.setDownloadSettings(false,true,0);
@@ -116,7 +114,6 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
                 song.setDownloadSettings(true,false,100);
                 song.setSongPath(path);
                 viewModel.update(song);
-
             }
 
             @Override
@@ -150,7 +147,6 @@ public class HomeRecyclerAdapter extends PagedListAdapter<Song, HomeRecyclerAdap
             mediaPlayer.setDataSource(path);
             mediaPlayer.prepare();
             mediaPlayer.start();
-
         } catch (IOException ignored) { }
     }
 
